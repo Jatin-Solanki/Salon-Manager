@@ -2,11 +2,14 @@ import React, { useState, useEffect } from "react";
 import { db } from "./firebaseConfig";
 import { collection, addDoc, onSnapshot, query, where, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore";
 
+import { LabPage } from "./pages/LabPage/labpage";
+
+import {AboutPage} from "./pages/About/aboutpage"
 
 export const StoreApp = () => {
   const [items, setItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
-  const [customer, setCustomer] = useState({ name: "", phone: "" ,barber: "" });
+  const [customer, setCustomer] = useState({ name: "", phone: "" ,barber: "" ,paymentMode:"" });
   const [discount, setDiscount] = useState(0);
   const [totalSales, setTotalSales] = useState(0);
   const [newItem, setNewItem] = useState({ name: "", price: "" });
@@ -15,12 +18,9 @@ export const StoreApp = () => {
   const [newBarber, setNewBarber] = useState({ name: "", phone_no: "" });
   const [editingBarber, setEditingBarber] = useState(null);
   const [barbers, setBarbers] = useState([]);
-  // useEffect(() => {
-  //   const unsubscribe = onSnapshot(collection(db, "items"), (snapshot) => {
-  //     setItems(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-  //   });
-  //   return () => unsubscribe(); // Cleanup on unmount
-  // }, []);
+  const [payment,setPayment]=useState("Select Payment Mode");
+  const [discountpercent,setDiscountPercent]=useState("Discount%");
+
   useEffect(() => {
     const unsubscribeItems = onSnapshot(collection(db, "items"), (snapshot) => {
       setItems(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
@@ -117,20 +117,73 @@ export const StoreApp = () => {
       console.error("Error deleting item: ", error);
     }
   };
-
-
+  
+  
   const handlePurchase = async () => {
     if (selectedItems.length === 0 || !customer.name || !customer.phone || !customer.barber) return;
-    const total = selectedItems.reduce((acc, item) => acc + item.price, 0) * (1 - discount / 100);
-    setCustomer({ name: "", phone: "" ,barber:""});
-    try {
-      await addDoc(collection(db, "sales"), { customer, total, date: new Date() });
-      setTotalSales(prev => prev + total);
-      setSelectedItems([]);
-    } catch (error) {
-      console.error("Error processing purchase: ", error);
+
+    // Find the barberId based on the selected barber name
+    const selectedBarberObj = barbers.find(barber => barber.name === customer.barber);
+    const barberId = selectedBarberObj ? selectedBarberObj.barberId : null;
+
+    if (!barberId) {
+        alert("Selected barber is not valid.");
+        return;
     }
-  };
+
+    const total = selectedItems.reduce((acc, item) => acc + item.price, 0) * (1 - discount / 100);
+    setCustomer({ name: "", phone: "", barber: "", paymentMode: "" });
+
+    try {
+        // Store sales data with barberId
+        await addDoc(collection(db, "sales"), { 
+            customerName: customer.name,
+            customerPhone: customer.phone,
+            barberId: barberId, // Store barberId instead of barber name
+            barberName: customer.barber, // Also store barber name for reference
+            paymentMode: customer.paymentMode,
+            total,
+            date: new Date()
+        });
+
+        setTotalSales(prev => prev + total);
+        setSelectedItems([]);
+        setDiscount(0);
+        setDiscountPercent("Discount%");
+
+        // Send message after successful purchase
+        const sendMessage = async () => {
+            try {
+                const response = await fetch("http://localhost:5000/send-message", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        phone: customer.phone,
+                        message: `Hello ${customer.name}, your purchase of $${total.toFixed(2)} is successful. Thank you for visiting our salon!`,
+                    }),
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    alert("Message sent successfully!");
+                } else {
+                    alert("Failed to send message.");
+                }
+            } catch (error) {
+                console.error("Error sending message:", error);
+            }
+        };
+
+        sendMessage();
+    } catch (error) {
+        console.error("Error processing purchase: ", error);
+    }
+};
+
+
+  
+  
+  
 
   const removeSelectedItem = (indexToRemove) => {
     setSelectedItems(selectedItems.filter((_, index) => index !== indexToRemove));
@@ -142,28 +195,6 @@ export const StoreApp = () => {
 
   return (
     <div className="p-4 max-w-lg mx-auto">
-      <h1 className="text-xl font-bold mb-4">Store Management</h1>   
-      <div>
-        <h2 className="text-lg font-semibold">{editingItem ? "Edit Item" : "Add Item"}</h2>
-        <input type="text" placeholder="Item Name" className="border p-2 m-1" value={newItem.name} onChange={(e) => setNewItem({ ...newItem, name: e.target.value })} />
-        <input type="number" placeholder="Price" className="border p-2 m-1" value={newItem.price} onChange={(e) => setNewItem({ ...newItem, price: e.target.value })} />
-        {editingItem ? (
-          <button className="bg-yellow-500 text-white p-2 rounded" onClick={updateItem}>Update</button>
-        ) : (
-          <button className="bg-blue-500 text-white p-2 rounded" onClick={addItem}>Add</button>
-        )}
-      </div>
-
-      <div>
-        <h2 className="text-lg font-semibold">Add Barber</h2>
-        <input type="text" placeholder="Barber Name" className="border p-2 m-1" value={newBarber.name} onChange={(e) => setNewBarber({ ...newBarber, name: e.target.value })} />
-        <input type="text" placeholder="Phone No" className="border p-2 m-1" value={newBarber.phone_no} onChange={(e) => setNewBarber({ ...newBarber, phone_no: e.target.value })} />
-        {editingBarber ? (
-          <button className="bg-yellow-500 text-white p-2 rounded" onClick={updateBarber}>Update Barber</button>
-        ) : (
-          <button className="bg-green-500 text-white p-2 rounded" onClick={addBarber}>Add Barber</button>
-        )}
-      </div>
       
       <div className="mt-4">
         <h2 className="text-lg font-semibold">Barbers</h2>
@@ -196,7 +227,7 @@ export const StoreApp = () => {
             <span>{item.name} - ${item.price}</span>
             <div>
               <button className="bg-green-500 text-white px-2 mx-1" onClick={() => setSelectedItems([...selectedItems, item])}>+</button>
-              <button className="bg-yellow-500 text-white px-2 mx-1" onClick={() => editItem(item)}>Edit</button>
+              {/* <button className="bg-yellow-500 text-white px-2 mx-1" onClick={() => editItem(item)}>Edit</button> */}
               <button className="bg-red-500 text-white px-2 mx-1" onClick={() => removeItem(item.id)}>Remove</button>
             </div>
           </div>
@@ -213,23 +244,50 @@ export const StoreApp = () => {
         ))}
       </div>
 
-      
 
       <div className="mt-4">
         <h2 className="text-lg font-semibold">Customer Details</h2>
-        <input type="text" placeholder="Name" className="border p-2 m-1" value={customer.name} onChange={(e) => setCustomer({ ...customer, name: e.target.value })} />
-        <input type="text" placeholder="Phone" className="border p-2 m-1" value={customer.phone} onChange={(e) => setCustomer({ ...customer, phone: e.target.value })} />
-        <select className="border p-2 m-1" value={customer.barber} onChange={(e) => setCustomer({ ...customer, barber: e.target.value })}>
+        <input
+          type="text"
+          placeholder="Name"
+          className="border p-2 m-1"
+          value={customer.name}
+          onChange={(e) => setCustomer({ ...customer, name: e.target.value })}
+        />
+        <input
+          type="text"
+          placeholder="Phone"
+          className="border p-2 m-1"
+          value={customer.phone}
+          onChange={(e) => setCustomer({ ...customer, phone: e.target.value })}
+        />
+        <select
+          className="border p-2 m-1"
+          value={customer.barber}
+          onChange={(e) => setCustomer({ ...customer, barber: e.target.value })}
+        >
           <option value="">Select Barber</option>
-          {barbers.map(barber => (
-            <option key={barber.id} value={barber.name}>{barber.name}</option>
+          {barbers.map((barber) => (
+            <option key={barber.id} value={barber.name}>
+              {barber.name}
+            </option>
           ))}
+        </select>
+        <select
+          className="border p-2 m-1"
+          value={customer.paymentMode}
+          onChange={(e) => setCustomer({ ...customer, paymentMode: e.target.value })}
+        >
+          <option value="">{payment}</option>
+          <option value="cash">Cash</option>
+          <option value="online">Online</option>
         </select>
       </div>
 
+
       <div className="mt-4">
         <h2 className="text-lg font-semibold">Discount</h2>
-        <input type="number" placeholder="Discount %" className="border p-2 m-1" onChange={(e) => setDiscount(parseFloat(e.target.value) || 0)} />
+        <input type="number" placeholder={discountpercent} className="border p-2 m-1" onChange={(e) => setDiscount(parseFloat(e.target.value) || 0)} />
       </div>
 
       <div className="mt-4 font-bold">
