@@ -119,12 +119,13 @@ export const StoreApp = () => {
   };
   
   
+
+
   const handlePurchase = async () => {
     if (selectedItems.length === 0 || !customer.name || !customer.phone || !customer.barber) return;
 
-    // Find the barberId based on the selected barber name
     const selectedBarberObj = barbers.find(barber => barber.name === customer.barber);
-    const barberId = selectedBarberObj ? selectedBarberObj.barberId : null;
+    const barberId = selectedBarberObj ? selectedBarberObj.id : null;
 
     if (!barberId) {
         alert("Selected barber is not valid.");
@@ -135,15 +136,15 @@ export const StoreApp = () => {
     setCustomer({ name: "", phone: "", barber: "", paymentMode: "" });
 
     try {
-        // Store sales data with barberId
         await addDoc(collection(db, "sales"), { 
             customerName: customer.name,
             customerPhone: customer.phone,
-            barberId: barberId, // Store barberId instead of barber name
-            barberName: customer.barber, // Also store barber name for reference
+            barberId: barberId,
+            barberName: customer.barber,
             paymentMode: customer.paymentMode,
             total,
-            date: new Date()
+            date: new Date(),
+            services: selectedItems.map(item => ({ name: item.name, price: item.price }))
         });
 
         setTotalSales(prev => prev + total);
@@ -151,7 +152,6 @@ export const StoreApp = () => {
         setDiscount(0);
         setDiscountPercent("Discount%");
 
-        // Send message after successful purchase
         const sendMessage = async () => {
             try {
                 const response = await fetch("http://localhost:5000/send-message", {
@@ -178,10 +178,7 @@ export const StoreApp = () => {
     } catch (error) {
         console.error("Error processing purchase: ", error);
     }
-};
-
-
-  
+  };
   
   
 

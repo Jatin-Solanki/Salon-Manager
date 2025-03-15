@@ -1,17 +1,7 @@
-// import './publication.css'
-// export const Publication=()=>{
-//     return(
-//         <>
-//         <div className="publication">
-//             <h1>Check Sells</h1>
-//         </div>
-//         </>
-//     )
-// }
-
 import React, { useState, useEffect } from "react";
 import { db } from "../../firebaseConfig";
 import { collection, getDocs, query, where, Timestamp } from "firebase/firestore";
+import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
 
 export const Publication = () => {
   const [startDate, setStartDate] = useState("");
@@ -22,6 +12,7 @@ export const Publication = () => {
   const [barbers, setBarbers] = useState([]);
   const [totalFilteredSales, setTotalFilteredSales] = useState(0);
   const [barberSales, setBarberSales] = useState({});
+  const [serviceSales, setServiceSales] = useState({});
 
   useEffect(() => {
     const fetchBarbers = async () => {
@@ -55,81 +46,121 @@ export const Publication = () => {
 
       // Calculate sales per barber
       const barberSalesMap = {};
+      const serviceSalesMap = {};
       salesData.forEach(sale => {
-        if (!barberSalesMap[sale.barberId]) {
-          barberSalesMap[sale.barberId] = 0;
-        }
+        if (!barberSalesMap[sale.barberId]) barberSalesMap[sale.barberId] = 0;
         barberSalesMap[sale.barberId] += sale.total || 0;
+
+        if (sale.services && Array.isArray(sale.services)) {
+          sale.services.forEach(service => {
+            if (!serviceSalesMap[service.name]) serviceSalesMap[service.name] = 0;
+            serviceSalesMap[service.name] += service.price || 0;
+          });
+        }
       });
       setBarberSales(barberSalesMap);
+      setServiceSales(serviceSalesMap);
     } catch (error) {
       console.error("Error fetching sales: ", error);
     }
   };
+
+  const pieData = Object.entries(serviceSales).map(([service, total]) => ({
+    name: service || "Unknown",
+    value: total,
+  }));
+
+  const colors = ["#8884d8", "#82ca9d", "#ffc658", "#ff7f50", "#a4de6c"];
 
   return (
     <div className="p-4 max-w-lg mx-auto">
       <h2 className="text-lg font-semibold">Sales Report</h2>
       <input type="date" className="border p-2 m-1" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
       <input type="date" className="border p-2 m-1" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
-      {/* <select className="border p-2 m-1" value={selectedBarber} onChange={(e) => setSelectedBarber(e.target.value)}>
-        <option value="all">All Barbers</option>
-        {barbers.map((barber) => (<option key={barber.id} value={barber.id}>{barber.name}</option>))}
-      </select>
-      <select className="border p-2 m-1" value={selectedPaymentMode} onChange={(e) => setSelectedPaymentMode(e.target.value)}>
-        <option value="all">Both Payment Modes</option>
-        <option value="cash">Cash</option>
-        <option value="online">Online</option>
-      </select> */}
       <button className="bg-blue-500 text-white p-2 m-2 rounded" onClick={fetchSales}>Fetch Sales</button>
+      
       <div className="mt-4 font-bold">
-        Total Sales {selectedBarber !== "all" ? ` for Barber: ${barbers.find(b => b.id === selectedBarber)?.name || "Unknown"}` : " (All Barbers)"},
-        {selectedPaymentMode !== "all" ? ` Payment Mode: ${selectedPaymentMode}` : " (All Modes)"}:  
-        <span className="text-blue-600"> ${totalFilteredSales.toFixed(2)}</span>
+        Total Sales: <span className="text-blue-600">${totalFilteredSales.toFixed(2)}</span>
       </div>
-      <div className="mt-4">
-        <h3 className="font-semibold">Sales Records</h3>
-        {sales.length > 0 ? (
-          <table className="w-full border mt-2">
-            <thead>
-              <tr className="border-b">
-                <th className="p-2">Date</th>
-                <th className="p-2">Barber</th>
-                <th className="p-2">Service</th>
-                <th className="p-2">Amount</th>
-                <th className="p-2">Payment Mode</th>
-              </tr>
-            </thead>
-            <tbody>
-              {sales.map((sale) => (
-                <tr key={sale.id} className="border-b">
-                  <td className="p-2">{sale.date.toDate().toLocaleDateString()}</td>
-                  <td className="p-2">{barbers.find(b => b.id === sale.barberId)?.name || "Unknown"}</td>
-                  <td className="p-2">{sale.service || "N/A"}</td>
-                  <td className="p-2">${sale.total.toFixed(2)}</td>
-                  <td className="p-2">{sale.paymentMode}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <p className="text-gray-500">No sales found for the selected filters.</p>
-        )}
-      </div>
-      <div className="mt-4">
-        <h3 className="font-semibold">Sales per Barber</h3>
-        {Object.keys(barberSales).length > 0 ? (
+      
+      <div className="mt-4 border p-4 rounded">
+        <h3 className="font-semibold">Sales per Service</h3>
+        {Object.keys(serviceSales).length > 0 ? (
           <ul className="list-disc pl-5">
-            {Object.entries(barberSales).map(([barberId, total]) => (
-              <li key={barberId}>
-                {barbers.find(b => b.id === barberId)?.name || "Unknown"}: ${total.toFixed(2)}
-              </li>
+            {Object.entries(serviceSales).map(([service, total]) => (
+              <li key={service}>{service || "Unknown"}: ${total.toFixed(2)}</li>
             ))}
           </ul>
         ) : (
-          <p className="text-gray-500">No sales data available for the selected date range.</p>
+          <p className="text-gray-500">No sales data available.</p>
         )}
       </div>
+      
+      <div className="mt-4 border p-4 rounded">
+        <h3 className="font-semibold">Sales per Service (Pie Chart)</h3>
+        {pieData.length > 0 ? (
+          <PieChart width={400} height={300}>
+            <Pie data={pieData} cx="50%" cy="50%" outerRadius={100} fill="#8884d8" dataKey="value" label>
+              {pieData.map((_, index) => (
+                <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+              ))}
+            </Pie>
+            <Tooltip />
+            <Legend />
+          </PieChart>
+        ) : (
+          <p className="text-gray-500">No data available for visualization.</p>
+        )}
+      </div>
+
+
+      
+      <div className="mt-4 border p-4 rounded">
+        <h3 className="font-semibold">Total Sales per Barber</h3>
+        {Object.keys(barberSales).length > 0 ? (
+          <ul className="list-disc pl-5">
+            {Object.entries(barberSales).map(([barberId, total]) => (
+              <li key={barberId}>{barbers.find(b => b.id === barberId)?.name || "Unknown"}: ${total.toFixed(2)}</li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-gray-500">No sales data available.</p>
+        )}
+      </div>
+      
+        {/* table */}
+      <div className="mt-4 border p-4 rounded">
+        <h3 className="font-semibold">Sales Table</h3>
+        <table className="w-full border-collapse border border-gray-300 mt-2">
+          <thead>
+            <tr className="bg-gray-200">
+              <th className="border p-2">Date</th>
+              <th className="border p-2">Barber</th>
+              <th className="border p-2">Services</th>
+              <th className="border p-2">Payment Mode</th>
+              <th className="border p-2">Total Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sales.length > 0 ? (
+              sales.map(sale => (
+                <tr key={sale.id} className="border">
+                  <td className="border p-2">{sale.date?.toDate().toLocaleDateString()}</td>
+                  <td className="border p-2">{barbers.find(b => b.id === sale.barberId)?.name || "Unknown"}</td>
+                  <td className="border p-2">{sale.services?.map(s => s.name).join(", ") || "N/A"}</td>
+                  <td className="border p-2">{sale.paymentMode}</td>
+                  <td className="border p-2">${sale.total?.toFixed(2)}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5" className="text-center p-2">No sales data available.</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+
     </div>
   );
 };
