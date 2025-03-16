@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { db } from "./firebaseConfig";
 import { collection, addDoc, onSnapshot, query, where, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore";
-
+import './Store.css';
 import { LabPage } from "./pages/LabPage/labpage";
 
 import {AboutPage} from "./pages/About/aboutpage"
@@ -191,33 +191,33 @@ export const StoreApp = () => {
   );
 
   return (
-    <div className="p-4 max-w-lg mx-auto">
-      
-      <div className="mt-4">
-        <h2 className="text-lg font-semibold">Barbers</h2>
-        {barbers.map(barber => (
-          <div key={barber.id} className="flex justify-between border p-2">
-            <span>{barber.name} - {barber.phone_no}</span>
-            <div>
-              <button className="bg-yellow-500 text-white px-2 mx-1" onClick={() => editBarber(barber)}>Edit</button>
-              <button className="bg-red-500 text-white px-2 mx-1" onClick={() => removeBarber(barber.id)}>Remove</button>
+    <div className="home">
+     <div style={{display:"flex"}}>
+        <div className="barber">
+          <h2 className="text-lg font-semibold">Barbers</h2>
+          {barbers.map(barber => (
+            <div key={barber.id} className="flex justify-between border p-2">
+              <span>{barber.name} - {barber.phone_no}</span>
+              <div>
+                <button className="bg-yellow-500 text-white px-2 mx-1" onClick={() => editBarber(barber)}>Edit</button>
+                <button className="bg-red-500 text-white px-2 mx-1" onClick={() => removeBarber(barber.id)}>Remove</button>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
-
-      <div className="mt-4">
-        <h2 className="text-lg font-semibold">Items</h2>
-        <div>
-          <input
-          type="text"
-          placeholder="Search items..."
-          className="border p-2 m-1 w-full"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+          ))}
         </div>
 
+        <div >
+          <h2 className="text-lg font-semibold">Items</h2>
+          <div>
+            <input
+            type="text"
+            placeholder="Search items..."
+            className="border p-2 m-1 w-full"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+     
 
         {filteredItems.map(item => (
           <div key={item.id} className="flex justify-between border p-2">
@@ -229,7 +229,9 @@ export const StoreApp = () => {
             </div>
           </div>
         ))}
-      </div>
+          </div>  
+
+      </div> 
 
       <div className="mt-4">
         <h2 className="text-lg font-semibold">Selected Items</h2>
