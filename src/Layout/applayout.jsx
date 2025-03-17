@@ -5,6 +5,7 @@ import { IoMdPersonAdd } from "react-icons/io";
 import { RiApps2AddFill } from "react-icons/ri";
 import { TbReport } from "react-icons/tb";
 import { GiExpense } from "react-icons/gi";
+import "./applayout.css";
 let titles=[
     {name:"Home",link:"/" ,icon:<FaHome size={30} /> },
     {name:"ADD Barber",link:"/about",icon:<IoMdPersonAdd size={30} />},
@@ -15,14 +16,18 @@ let titles=[
 export const AppLayout=()=>{
     return(
         <>
-            <div style={{textAlign:"center" ,backgroundColor:"red" ,width:"50%" ,position:"absolute",right:"20px"}}>
+            {/* <div style={{textAlign:"center" ,backgroundColor:"red" ,width:"50%" ,position:"absolute",right:"20px"}}>
                 <h1 style={{display:"inline-block"}}>Salon Manager</h1>
             </div>
-            
-            <div style={{display:"flex"}}>
-                <Navbar titles={titles}/>
+             */}
+            <div >
+                <div>
+                    <Navbar titles={titles}/>
+                </div>
+                <div className="right-side" >
+                    <Outlet />
+                </div>
                 
-                <Outlet/>
             </div>
         </>
     )

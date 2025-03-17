@@ -1,6 +1,79 @@
 .home{
     position: absolute;
-    right: 50px;
-    margin-top: 80px;
-    margin-left: 80px;
+    left: 320px;
+    /* height: 100%; */
+    /* margin-top: 80px;
+    margin-left: 80px; */
+}
+.barber{
+   margin-right: 40px;
+   position: relative;
+   top: 100px;
+}
+.services{
+    /* background-color: aqua; */
+    /* position: relative;
+    top: 80px; */
+    margin-right: 40px;
+}
+.service-heading{
+    margin-bottom: 6px;
+}
+.selected-services{
+    /* background-color: bisque; */
+    /* margin-left: 430px; */
+    position: relative;
+    top: 100px;
+    margin-right: 40px;
+}
+.selected-services h2{
+    margin-bottom: 6px;
+}
+.selected-services span{
+    font-size: larger;
+    margin-right: 5px;
+    
+}
+.customer-details{
+    /* background-color: blue; */
+    /* margin-left: 430px; */
+    position: relative;
+    top: 100px;
+    margin-right: 40px;
+}
+.discount{
+    /* background-color: blue; */
+    /* margin-left: 430px; */
+    position: relative;
+    top: 100px;
+}
+.complete-purchase{
+    /* margin-left: 430px; */
+    margin-top: 10px;
+}
+.barber-name{
+    font-size: larger;
+    display: inline-block;
+    margin-bottom: 7px;
+    margin-top: 7px;
+}
+.service-name{
+    font-size: larger;
+    display: inline-block;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+.barber-edit{
+    margin-right: 30px;
+    border-radius: 100%;
+    cursor: pointer;
+}
+.barber-remove{
+    cursor: pointer;
+}
+.services-all{
+    position: relative;
+    top: 100px;
+    display: flex;
+    
 }

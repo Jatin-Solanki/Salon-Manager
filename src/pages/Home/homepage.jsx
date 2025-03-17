@@ -5,7 +5,10 @@ export const HomePage=()=>{
 
     return(
         <>
-        <StoreApp/>
+        <div className='homepage'>
+            <StoreApp/>
+        </div>
+        
         </>
     )
 }
