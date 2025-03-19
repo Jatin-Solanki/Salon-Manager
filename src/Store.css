@@ -1,6 +1,7 @@
 .home{
     position: absolute;
     left: 320px;
+    display: flex;
     /* height: 100%; */
     /* margin-top: 80px;
     margin-left: 80px; */
@@ -12,19 +13,20 @@
 }
 .services{
     /* background-color: aqua; */
-    /* position: relative;
-    top: 80px; */
     margin-right: 40px;
 }
+
 .service-heading{
     margin-bottom: 6px;
 }
 .selected-services{
     /* background-color: bisque; */
     /* margin-left: 430px; */
-    position: relative;
-    top: 100px;
+    position: absolute;
+    right: 6px;
     margin-right: 40px;
+    max-height: 250px; /* Limit expansion */
+    overflow-y: auto;
 }
 .selected-services h2{
     margin-bottom: 6px;
@@ -35,17 +37,19 @@
     
 }
 .customer-details{
-    /* background-color: blue; */
-    /* margin-left: 430px; */
-    position: relative;
-    top: 100px;
-    margin-right: 40px;
+    position: absolute;
+    left: 150px;
+    top: 470px;
+}
+.customer-details input{
+    height: 20px;
+    border-radius: 5px;
 }
 .discount{
-    /* background-color: blue; */
-    /* margin-left: 430px; */
-    position: relative;
-    top: 100px;
+   
+    position: absolute;
+    top:320px;
+    right:0px;
 }
 .complete-purchase{
     /* margin-left: 430px; */
@@ -62,6 +66,14 @@
     display: inline-block;
     margin-bottom: 5px;
     margin-top: 5px;
+    cursor: pointer;
+    height: 40px;
+}
+.search-service{
+    height: 20px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
 }
 .barber-edit{
     margin-right: 30px;
@@ -72,8 +84,16 @@
     cursor: pointer;
 }
 .services-all{
-    position: relative;
-    top: 100px;
-    display: flex;
+    position: absolute;
     
+    display: flex;
+    height: 300px; /* Adjust as per your UI */
+    overflow-y: auto; /* Allows scrolling when needed */
+}
+.merge{
+    display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px; /* Ensures proper spacing */
+  min-width: 400px; /* Prevents the width from shrinking */
 }

@@ -1,18 +1,6 @@
-// import "./aboutpage.css";
-
-// export const AboutPage=()=>{
-//     return(
-//         <>
-//         <div className="about">
-//             <h1>ADD Barber</h1>
-//         </div>
-//         </>
-//     )
-// }
-
 import React, { useState, useEffect } from "react";
 import { db } from "../../firebaseConfig";
-import { collection, doc, setDoc, onSnapshot, updateDoc, deleteDoc } from "firebase/firestore";
+import { collection, doc, setDoc, onSnapshot, updateDoc, deleteDoc, addDoc } from "firebase/firestore";
 
 export const AboutPage = ({ setBarbers }) => {
   const [newBarber, setNewBarber] = useState({ name: "", phone_no: "" });
@@ -22,21 +10,21 @@ export const AboutPage = ({ setBarbers }) => {
   useEffect(() => {
     const unsubscribeBarbers = onSnapshot(collection(db, "barbers"), (snapshot) => {
       const barberList = snapshot.docs.map(doc => ({ barberId: doc.id, ...doc.data() }));
-      setBarbers(barberList);
       setLocalBarbers(barberList);
+      if (setBarbers) setBarbers(barberList);  // Ensure setBarbers is used safely
     });
+
     return () => unsubscribeBarbers();
   }, [setBarbers]);
 
   const addBarber = async () => {
     if (!newBarber.name || !newBarber.phone_no) return;
     try {
-      const barberRef = doc(collection(db, "barbers")); // Create a unique barberId
-      await setDoc(barberRef, {
-        barberId: barberRef.id, // Store barberId in Firestore
+      const barberRef = await addDoc(collection(db, "barbers"), {
         name: newBarber.name,
         phone_no: newBarber.phone_no,
       });
+
       setNewBarber({ name: "", phone_no: "" });
     } catch (error) {
       console.error("Error adding barber: ", error);
@@ -50,6 +38,7 @@ export const AboutPage = ({ setBarbers }) => {
         name: newBarber.name,
         phone_no: newBarber.phone_no,
       });
+
       setEditingBarber(null);
       setNewBarber({ name: "", phone_no: "" });
     } catch (error) {
@@ -65,7 +54,6 @@ export const AboutPage = ({ setBarbers }) => {
   const removeBarber = async (barberId) => {
     try {
       await deleteDoc(doc(db, "barbers", barberId));
-      setLocalBarbers(barbers.filter(barber => barber.barberId !== barberId));
     } catch (error) {
       console.error("Error deleting barber: ", error);
     }
