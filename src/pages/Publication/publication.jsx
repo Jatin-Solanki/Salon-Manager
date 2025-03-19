@@ -14,6 +14,7 @@ export const Publication = () => {
   const [barberSales, setBarberSales] = useState({});
   const [serviceSales, setServiceSales] = useState({});
 
+
   useEffect(() => {
     const fetchBarbers = async () => {
       try {

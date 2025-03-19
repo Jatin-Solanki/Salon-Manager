@@ -9,6 +9,8 @@ import { Publication } from "./pages/Publication/publication";
 import { Expense } from "./pages/Expense/AddExpense";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AppLayout } from "./Layout/applayout";
+
+
 export const App=()=>{
   const router= createBrowserRouter([
     {
