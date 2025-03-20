@@ -60,48 +60,73 @@ export const AboutPage = ({ setBarbers }) => {
   };
 
   return (
-    <div>
-      <h2 className="text-lg font-semibold">{editingBarber ? "Edit Barber" : "Add Barber"}</h2>
-      <input
-        type="text"
-        placeholder="Barber Name"
-        className="border p-2 m-1"
-        value={newBarber.name}
-        onChange={(e) => setNewBarber({ ...newBarber, name: e.target.value })}
-      />
-      <input
-        type="text"
-        placeholder="Phone No"
-        className="border p-2 m-1"
-        value={newBarber.phone_no}
-        onChange={(e) => setNewBarber({ ...newBarber, phone_no: e.target.value })}
-      />
-      {editingBarber ? (
-        <button className="bg-yellow-500 text-white p-2 rounded" onClick={updateBarber}>
-          Update Barber
-        </button>
-      ) : (
-        <button className="bg-green-500 text-white p-2 rounded" onClick={addBarber}>
-          Add Barber
-        </button>
-      )}
+  
+<div style={{display:"flex", justifyContent:"center"}}>
+  <div className="add-barber" style={{ padding: "16px", border: "1px solid #ccc", borderRadius: "8px" , width:"500px" }}>
+          <h2 style={{ fontSize: "18px", fontWeight: "600" }}>
+            {editingBarber ? "Edit Barber" : "Add Barber"}
+          </h2>
+          <input
+            type="text"
+            placeholder="Barber Name"
+            style={{ border: "1px solid #ccc", padding: "8px", margin: "4px", display: "block", width: "95%" }}
+            value={newBarber.name}
+            onChange={(e) => setNewBarber({ ...newBarber, name: e.target.value })}
+          />
+          <input
+            type="text"
+            placeholder="Phone No"
+            style={{ border: "1px solid #ccc", padding: "8px", margin: "4px", display: "block", width: "95%" }}
+            value={newBarber.phone_no}
+            onChange={(e) => setNewBarber({ ...newBarber, phone_no: e.target.value })}
+          />
+          {editingBarber ? (
+            <button 
+              style={{ backgroundColor: "#facc15", color: "white", padding: "8px", borderRadius: "4px", border: "none", marginTop: "8px" }}
+              onClick={updateBarber}
+            >
+              Update Barber
+            </button>
+          ) : (
+            <button 
+              style={{ backgroundColor: "#22c55e", color: "white", padding: "8px", borderRadius: "4px", border: "none", marginTop: "8px" }}
+              onClick={addBarber}
+            >
+              Add Barber
+            </button>
+          )}
 
-      <div className="mt-4">
-        <h2 className="text-lg font-semibold">Barbers List</h2>
-        {barbers.length > 0 ? (
-          barbers.map(barber => (
-            <div key={barber.barberId} className="flex justify-between border p-2">
-              <span>{barber.name} - {barber.phone_no}</span>
-              <div>
-                <button className="bg-yellow-500 text-white px-2 mx-1" onClick={() => editBarber(barber)}>Edit</button>
-                <button className="bg-red-500 text-white px-2 mx-1" onClick={() => removeBarber(barber.barberId)}>Remove</button>
-              </div>
-            </div>
-          ))
-        ) : (
-          <p>No barbers found.</p>
-        )}
-      </div>
-    </div>
+        <div style={{ marginTop: "16px" }}>
+            <h2 style={{ fontSize: "18px", fontWeight: "600" }}>Barbers List</h2>
+            <div style={{ maxHeight: "400px", overflowY: "auto", border: "1px solid #ddd", padding: "8px" }} >
+            {barbers.length > 0 ? (
+              barbers.map((barber) => (
+                <div key={barber.barberId} style={{ display: "flex", justifyContent: "space-between", border: "1px solid #ccc", padding: "8px", marginTop: "4px" ,maxHeight:"100px", overflowY:"auto" }}>
+                  <span>{barber.name} - {barber.phone_no}</span>
+                  <div>
+                    <button 
+                      style={{ backgroundColor: "#facc15", color: "white", padding: "4px 8px", margin: "0 4px", border: "none", borderRadius: "4px" }} 
+                      onClick={() => editBarber(barber)}
+                    >
+                      Edit
+                    </button>
+                    <button 
+                      style={{ backgroundColor: "#ef4444", color: "white", padding: "4px 8px", margin: "0 4px", border: "none", borderRadius: "4px" }} 
+                      onClick={() => removeBarber(barber.barberId)}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p>No barbers found.</p>
+            )}
+          </div>
+        </div>
+  </div>
+</div>
+    
+
   );
 };

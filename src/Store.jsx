@@ -212,7 +212,7 @@ export const StoreApp = () => {
         padding: "20px",
         position:"relative",
         top:"0px",
-        height: "400px", /* Adjust as per your UI */
+        
         // overflow-y: auto; /* Allows scrolling when needed */
       }}
     >

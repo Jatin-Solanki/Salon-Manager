@@ -66,58 +66,73 @@ export const LabPage = () => {
   };
 
   return (
-    <div>
-      <h2 className="text-lg font-semibold">{editingItem ? "Edit Item" : "Add Item"}</h2>
-      <input
-        type="text"
-        placeholder="Item Name"
-        className="border p-2 m-1"
-        value={newItem.name}
-        onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
-      />
-      <input
-        type="number"
-        placeholder="Price"
-        className="border p-2 m-1"
-        value={newItem.price}
-        onChange={(e) => setNewItem({ ...newItem, price: e.target.value })}
-      />
-      {editingItem ? (
-        <button className="bg-yellow-500 text-white p-2 rounded m-1" onClick={updateItem}>
-          Update
-        </button>
-      ) : (
-        <button className="bg-blue-500 text-white p-2 rounded m-1" onClick={addItem}>
-          Add
-        </button>
-      )}
+    <div style={{display:"flex" ,justifyContent:"center"}}>
 
-      <div className="mt-4">
-        <h2 className="text-lg font-semibold">Items</h2>
-        {items.length > 0 ? (
-          items.map((item) => (
-            <div key={item.id} className="flex justify-between border p-2 items-center">
-              <span>{item.name} - ${item.price}</span>
-              <div>
-                <button
-                  className="bg-green-500 text-white p-1 rounded mx-1"
-                  onClick={() => handleEdit(item)}
-                >
-                  Edit
-                </button>
-                <button
-                  className="bg-red-500 text-white p-1 rounded"
-                  onClick={() => deleteItem(item.id)}
-                >
-                  Delete
-                </button>
-              </div>
+      <div style={{ padding: "16px", border: "1px solid #ccc", borderRadius: "8px" ,width:"500px" }}>
+          <h2 style={{ fontSize: "18px", fontWeight: "600" }}>
+            {editingItem ? "Edit Item" : "Add Item"}
+          </h2>
+          <input
+            type="text"
+            placeholder="Item Name"
+            style={{ border: "1px solid #ccc", padding: "8px", margin: "4px", display: "block", width: "100%" }}
+            value={newItem.name}
+            onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
+          />
+          <input
+            type="number"
+            placeholder="Price"
+            style={{ border: "1px solid #ccc", padding: "8px", margin: "4px", display: "block", width: "100%" }}
+            value={newItem.price}
+            onChange={(e) => setNewItem({ ...newItem, price: e.target.value })}
+          />
+          {editingItem ? (
+            <button 
+              style={{ backgroundColor: "#facc15", color: "white", padding: "8px", borderRadius: "4px", border: "none", margin: "4px" }}
+              onClick={updateItem}
+            >
+              Update
+            </button>
+          ) : (
+            <button 
+              style={{ backgroundColor: "#3b82f6", color: "white", padding: "8px", borderRadius: "4px", border: "none", margin: "4px" }}
+              onClick={addItem}
+            >
+              Add
+            </button>
+          )}
+
+          <div style={{ marginTop: "16px" }}>
+            <h2 style={{ fontSize: "18px", fontWeight: "600" }}>Items</h2>
+            <div style={{ maxHeight: "400px", overflowY: "auto", border: "1px solid #ddd", padding: "8px" }}>
+              {items.length > 0 ? (
+                items.map((item) => (
+                  <div key={item.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #ccc", padding: "8px" }}>
+                    <span>{item.name} - ${item.price}</span>
+                    <div>
+                      <button 
+                        style={{ backgroundColor: "#22c55e", color: "white", padding: "4px 8px", margin: "0 4px", border: "none", borderRadius: "4px" }} 
+                        onClick={() => handleEdit(item)}
+                      >
+                        Edit
+                      </button>
+                      <button 
+                        style={{ backgroundColor: "#ef4444", color: "white", padding: "4px 8px", margin: "0 4px", border: "none", borderRadius: "4px" }} 
+                        onClick={() => deleteItem(item.id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p>No items found.</p>
+              )}
             </div>
-          ))
-        ) : (
-          <p>No items found.</p>
-        )}
-      </div>
+          </div>
+        </div>
+
     </div>
+
   );
 };
