@@ -60,34 +60,68 @@ export const Expense = () => {
   };
 
   return (
-    <div className="expense-container">
-      <h2>Add Expense</h2>
-      <input
-        type="text"
-        placeholder="Expense Name"
-        value={expense.name}
-        onChange={(e) => setExpense({ ...expense, name: e.target.value })}
-      />
-      <input
-        type="number"
-        placeholder="Price"
-        value={expense.price}
-        onChange={(e) => setExpense({ ...expense, price: e.target.value })}
-      />
-      <button onClick={addExpense}>Add Expense</button>
-
-      <h3>Fetch Total Expense</h3>
-      <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
-      <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
-      <button onClick={fetchTotalExpense}>Get Total Expense</button>
-      <h4>Total Expense: ${totalExpense.toFixed(2)}</h4>
-
-      <h3>Expense List</h3>
-      <ul>
-        {expenses.map((exp) => (
-          <li key={exp.id}>{exp.name} - ${exp.price} - {exp.date ? new Date(exp.date.toDate()).toLocaleDateString() : "No Date"}</li>
-        ))}
+    <div style={{ padding: "16px", border: "1px solid #ccc", borderRadius: "8px", maxWidth: "400px", margin: "auto" }}>
+    <h2 style={{ fontSize: "18px", fontWeight: "600" }}>Add Expense</h2>
+    <input
+      type="text"
+      placeholder="Expense Name"
+      style={{ border: "1px solid #ccc", padding: "8px", margin: "4px", display: "block", width: "100%" }}
+      value={expense.name}
+      onChange={(e) => setExpense({ ...expense, name: e.target.value })}
+    />
+    <input
+      type="number"
+      placeholder="Price"
+      style={{ border: "1px solid #ccc", padding: "8px", margin: "4px", display: "block", width: "100%" }}
+      value={expense.price}
+      onChange={(e) => setExpense({ ...expense, price: e.target.value })}
+    />
+    <button 
+      style={{ backgroundColor: "#3b82f6", color: "white", padding: "8px", borderRadius: "4px", border: "none", margin: "4px", width: "100%" }}
+      onClick={addExpense}
+    >
+      Add Expense
+    </button>
+  
+    <h3 style={{ fontSize: "16px", fontWeight: "600", marginTop: "16px" }}>Fetch Total Expense</h3>
+    <input 
+      type="date" 
+      style={{ border: "1px solid #ccc", padding: "8px", margin: "4px", display: "block", width: "100%" }}
+      value={startDate} 
+      onChange={(e) => setStartDate(e.target.value)} 
+    />
+    <input 
+      type="date" 
+      style={{ border: "1px solid #ccc", padding: "8px", margin: "4px", display: "block", width: "100%" }}
+      value={endDate} 
+      onChange={(e) => setEndDate(e.target.value)} 
+    />
+    <button 
+      style={{ backgroundColor: "#facc15", color: "white", padding: "8px", borderRadius: "4px", border: "none", margin: "4px", width: "100%" }}
+      onClick={fetchTotalExpense}
+    >
+      Get Total Expense
+    </button>
+    <h4 style={{ fontSize: "16px", fontWeight: "600", marginTop: "8px" }}>Total Expense: ${totalExpense.toFixed(2)}</h4>
+  
+    <h3 style={{ fontSize: "16px", fontWeight: "600", marginTop: "16px" }}>Expense List</h3>
+    <div style={{ maxHeight: "200px", overflowY: "auto", border: "1px solid #ddd", padding: "8px" }}>
+      <ul style={{ listStyle: "none", padding: "0" }}>
+        {expenses.length > 0 ? (
+          expenses.map((exp) => (
+            <li 
+              key={exp.id} 
+              style={{ borderBottom: "1px solid #ccc", padding: "8px", marginBottom: "4px" }}
+            >
+              {exp.name} - ${exp.price} - {exp.date ? new Date(exp.date.toDate()).toLocaleDateString() : "No Date"}
+            </li>
+          ))
+        ) : (
+          <p>No expenses found.</p>
+        )}
       </ul>
     </div>
+  </div>
+  
   );
 };
