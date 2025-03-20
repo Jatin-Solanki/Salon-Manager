@@ -74,94 +74,114 @@ export const Publication = () => {
   const colors = ["#8884d8", "#82ca9d", "#ffc658", "#ff7f50", "#a4de6c"];
 
   return (
-    <div className="p-4 max-w-lg mx-auto">
-      <h2 className="text-lg font-semibold">Sales Report</h2>
-      <input type="date" className="border p-2 m-1" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
-      <input type="date" className="border p-2 m-1" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
-      <button className="bg-blue-500 text-white p-2 m-2 rounded" onClick={fetchSales}>Fetch Sales</button>
-      
-      <div className="mt-4 font-bold">
-        Total Sales: <span className="text-blue-600">${totalFilteredSales.toFixed(2)}</span>
-      </div>
-      
-      <div className="mt-4 border p-4 rounded">
-        <h3 className="font-semibold">Sales per Service</h3>
-        {Object.keys(serviceSales).length > 0 ? (
-          <ul className="list-disc pl-5">
-            {Object.entries(serviceSales).map(([service, total]) => (
-              <li key={service}>{service || "Unknown"}: ${total.toFixed(2)}</li>
-            ))}
-          </ul>
-        ) : (
-          <p className="text-gray-500">No sales data available.</p>
-        )}
-      </div>
-      
-      <div className="mt-4 border p-4 rounded">
-        <h3 className="font-semibold">Sales per Service (Pie Chart)</h3>
-        {pieData.length > 0 ? (
-          <PieChart width={400} height={300}>
-            <Pie data={pieData} cx="50%" cy="50%" outerRadius={100} fill="#8884d8" dataKey="value" label>
-              {pieData.map((_, index) => (
-                <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
-              ))}
-            </Pie>
-            <Tooltip />
-            <Legend />
-          </PieChart>
-        ) : (
-          <p className="text-gray-500">No data available for visualization.</p>
-        )}
-      </div>
+<div style={{ padding: "16px", maxWidth: "32rem", margin: "0 auto" }}>
+  <h2 style={{ fontSize: "1.125rem", fontWeight: "600" }}>Sales Report</h2>
+  
+  <input 
+    type="date" 
+    style={{ border: "1px solid #ccc", padding: "8px", margin: "4px" }} 
+    value={startDate} 
+    onChange={(e) => setStartDate(e.target.value)} 
+  />
+  
+  <input 
+    type="date" 
+    style={{ border: "1px solid #ccc", padding: "8px", margin: "4px" }} 
+    value={endDate} 
+    onChange={(e) => setEndDate(e.target.value)} 
+  />
+  
+  <button 
+    style={{ backgroundColor: "#3B82F6", color: "white", padding: "8px", margin: "8px", borderRadius: "4px" }} 
+    onClick={fetchSales}
+  >
+    Fetch Sales
+  </button>
 
+  <div style={{ marginTop: "16px", fontWeight: "bold" }}>
+    Total Sales: <span style={{ color: "#2563EB" }}>${totalFilteredSales.toFixed(2)}</span>
+  </div>
 
-      
-      <div className="mt-4 border p-4 rounded">
-        <h3 className="font-semibold">Total Sales per Barber</h3>
-        {Object.keys(barberSales).length > 0 ? (
-          <ul className="list-disc pl-5">
-            {Object.entries(barberSales).map(([barberId, total]) => (
-              <li key={barberId}>{barbers.find(b => b.id === barberId)?.name || "Unknown"}: ${total.toFixed(2)}</li>
-            ))}
-          </ul>
-        ) : (
-          <p className="text-gray-500">No sales data available.</p>
-        )}
-      </div>
-      
-        {/* table */}
-      <div className="mt-4 border p-4 rounded">
-        <h3 className="font-semibold">Sales Table</h3>
-        <table className="w-full border-collapse border border-gray-300 mt-2">
-          <thead>
-            <tr className="bg-gray-200">
-              <th className="border p-2">Date</th>
-              <th className="border p-2">Barber</th>
-              <th className="border p-2">Services</th>
-              <th className="border p-2">Payment Mode</th>
-              <th className="border p-2">Total Amount</th>
+  <div style={{ marginTop: "16px", border: "1px solid #ccc", padding: "16px", borderRadius: "8px" }}>
+    <h3 style={{ fontWeight: "600" }}>Sales per Service</h3>
+    {Object.keys(serviceSales).length > 0 ? (
+      <ul style={{ listStyleType: "disc", paddingLeft: "20px" }}>
+        {Object.entries(serviceSales).map(([service, total]) => (
+          <li key={service}>{service || "Unknown"}: ${total.toFixed(2)}</li>
+        ))}
+      </ul>
+    ) : (
+      <p style={{ color: "#6B7280" }}>No sales data available.</p>
+    )}
+  </div>
+
+  <div style={{ marginTop: "16px", border: "1px solid #ccc", padding: "16px", borderRadius: "8px" }}>
+    <h3 style={{ fontWeight: "600" }}>Sales per Service (Pie Chart)</h3>
+    {pieData.length > 0 ? (
+      <PieChart width={400} height={300}>
+        <Pie data={pieData} cx="50%" cy="50%" outerRadius={100} fill="#8884d8" dataKey="value" label>
+          {pieData.map((_, index) => (
+            <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+          ))}
+        </Pie>
+        <Tooltip />
+        <Legend />
+      </PieChart>
+    ) : (
+      <p style={{ color: "#6B7280" }}>No data available for visualization.</p>
+    )}
+  </div>
+
+  <div style={{ marginTop: "16px", border: "1px solid #ccc", padding: "16px", borderRadius: "8px" }}>
+    <h3 style={{ fontWeight: "600" }}>Total Sales per Barber</h3>
+    {Object.keys(barberSales).length > 0 ? (
+      <ul style={{ listStyleType: "disc", paddingLeft: "20px" }}>
+        {Object.entries(barberSales).map(([barberId, total]) => (
+          <li key={barberId}>{barbers.find(b => b.id === barberId)?.name || "Unknown"}: ${total.toFixed(2)}</li>
+        ))}
+      </ul>
+    ) : (
+      <p style={{ color: "#6B7280" }}>No sales data available.</p>
+    )}
+  </div>
+
+  {/* Sales Table */}
+  <div style={{ marginTop: "16px", border: "1px solid #ccc", padding: "16px", borderRadius: "8px" }}>
+    <h3 style={{ fontWeight: "600" }}>Sales Table</h3>
+    <table style={{ width: "100%", borderCollapse: "collapse", border: "1px solid #ccc", marginTop: "8px" }}>
+      <thead>
+        <tr style={{ backgroundColor: "#E5E7EB" }}>
+          <th style={{ border: "1px solid #ccc", padding: "8px" }}>Date</th>
+          <th style={{ border: "1px solid #ccc", padding: "8px" }}>Barber</th>
+          <th style={{ border: "1px solid #ccc", padding: "8px" }}>Services</th>
+          <th style={{ border: "1px solid #ccc", padding: "8px" }}>Payment Mode</th>
+          <th style={{ border: "1px solid #ccc", padding: "8px" }}>Total Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        {sales.length > 0 ? (
+          sales.map(sale => (
+            <tr key={sale.id} style={{ border: "1px solid #ccc" }}>
+              <td style={{ border: "1px solid #ccc", padding: "8px" }}>{sale.date?.toDate().toLocaleDateString()}</td>
+              <td style={{ border: "1px solid #ccc", padding: "8px" }}>
+                {barbers.find(b => b.id === sale.barberId)?.name || "Unknown"}
+              </td>
+              <td style={{ border: "1px solid #ccc", padding: "8px" }}>
+                {sale.services?.map(s => s.name).join(", ") || "N/A"}
+              </td>
+              <td style={{ border: "1px solid #ccc", padding: "8px" }}>{sale.paymentMode}</td>
+              <td style={{ border: "1px solid #ccc", padding: "8px" }}>${sale.total?.toFixed(2)}</td>
             </tr>
-          </thead>
-          <tbody>
-            {sales.length > 0 ? (
-              sales.map(sale => (
-                <tr key={sale.id} className="border">
-                  <td className="border p-2">{sale.date?.toDate().toLocaleDateString()}</td>
-                  <td className="border p-2">{barbers.find(b => b.id === sale.barberId)?.name || "Unknown"}</td>
-                  <td className="border p-2">{sale.services?.map(s => s.name).join(", ") || "N/A"}</td>
-                  <td className="border p-2">{sale.paymentMode}</td>
-                  <td className="border p-2">${sale.total?.toFixed(2)}</td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="5" className="text-center p-2">No sales data available.</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+          ))
+        ) : (
+          <tr>
+            <td colSpan="5" style={{ textAlign: "center", padding: "8px" }}>No sales data available.</td>
+          </tr>
+        )}
+      </tbody>
+    </table>
+  </div>
+</div>
 
-    </div>
   );
 };

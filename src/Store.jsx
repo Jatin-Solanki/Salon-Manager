@@ -350,9 +350,7 @@ export const StoreApp = () => {
           ))}
         </div>
 
-
-
-        <div
+<div
   className="customer-details"
   style={{
     backgroundColor: "#f8f9fa",

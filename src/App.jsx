@@ -9,7 +9,7 @@ import { Publication } from "./pages/Publication/publication";
 import { Expense } from "./pages/Expense/AddExpense";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AppLayout } from "./Layout/applayout";
-
+import { History } from "./pages/History/History";
 
 export const App=()=>{
   const router= createBrowserRouter([
@@ -36,6 +36,10 @@ export const App=()=>{
         {
           path:"/expense",
           element:<Expense/>,
+        },
+        {
+          path:"/history",
+          element:<History/>
         },
       ]
     }
