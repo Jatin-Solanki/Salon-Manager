@@ -9,7 +9,7 @@ import "./applayout.css";
 let titles=[
     {name:"Home",link:"/" ,icon:<FaHome size={30} /> },
     {name:"ADD Barber",link:"/about",icon:<IoMdPersonAdd size={30} />},
-    {name:"ADD Items",link:"/lab",icon:<RiApps2AddFill size={30} />},
+    {name:"ADD Services",link:"/lab",icon:<RiApps2AddFill size={30} />},
     {name:"Sells Report",link:"/publication",icon:<TbReport size={30} />},
     {name:"ADD Expense",link:"/expense",icon:<GiExpense size={30} />},
 ]

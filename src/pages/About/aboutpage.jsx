@@ -82,14 +82,14 @@ export const AboutPage = ({ setBarbers }) => {
           />
           {editingBarber ? (
             <button 
-              style={{ backgroundColor: "#facc15", color: "white", padding: "8px", borderRadius: "4px", border: "none", marginTop: "8px" }}
+              style={{ backgroundColor: "#facc15", color: "white", padding: "8px", borderRadius: "4px", border: "none", marginTop: "8px" ,cursor:"pointer" }}
               onClick={updateBarber}
             >
               Update Barber
             </button>
           ) : (
             <button 
-              style={{ backgroundColor: "#22c55e", color: "white", padding: "8px", borderRadius: "4px", border: "none", marginTop: "8px" }}
+              style={{ backgroundColor: "#22c55e", color: "white", padding: "8px", borderRadius: "4px", border: "none", marginTop: "8px" , cursor:"pointer" }}
               onClick={addBarber}
             >
               Add Barber
@@ -105,13 +105,13 @@ export const AboutPage = ({ setBarbers }) => {
                   <span>{barber.name} - {barber.phone_no}</span>
                   <div>
                     <button 
-                      style={{ backgroundColor: "#facc15", color: "white", padding: "4px 8px", margin: "0 4px", border: "none", borderRadius: "4px" }} 
+                      style={{ backgroundColor: "#facc15", color: "white", padding: "4px 8px", margin: "0 4px", border: "none", borderRadius: "4px" , cursor:"pointer" }} 
                       onClick={() => editBarber(barber)}
                     >
                       Edit
                     </button>
                     <button 
-                      style={{ backgroundColor: "#ef4444", color: "white", padding: "4px 8px", margin: "0 4px", border: "none", borderRadius: "4px" }} 
+                      style={{ backgroundColor: "#ef4444", color: "white", padding: "4px 8px", margin: "0 4px", border: "none", borderRadius: "4px" , cursor:"pointer" }} 
                       onClick={() => removeBarber(barber.barberId)}
                     >
                       Remove

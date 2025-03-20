@@ -70,7 +70,7 @@ export const LabPage = () => {
 
       <div style={{ padding: "16px", border: "1px solid #ccc", borderRadius: "8px" ,width:"500px" }}>
           <h2 style={{ fontSize: "18px", fontWeight: "600" }}>
-            {editingItem ? "Edit Item" : "Add Item"}
+            {editingItem ? "Edit Services" : "Add Services"}
           </h2>
           <input
             type="text"
@@ -88,14 +88,14 @@ export const LabPage = () => {
           />
           {editingItem ? (
             <button 
-              style={{ backgroundColor: "#facc15", color: "white", padding: "8px", borderRadius: "4px", border: "none", margin: "4px" }}
+              style={{ backgroundColor: "#facc15", color: "white", padding: "8px", borderRadius: "4px", border: "none", margin: "4px", cursor:"pointer" }}
               onClick={updateItem}
             >
               Update
             </button>
           ) : (
             <button 
-              style={{ backgroundColor: "#3b82f6", color: "white", padding: "8px", borderRadius: "4px", border: "none", margin: "4px" }}
+              style={{ backgroundColor: "#3b82f6", color: "white", padding: "8px", borderRadius: "4px", border: "none", margin: "4px" ,cursor:"pointer" }}
               onClick={addItem}
             >
               Add
@@ -103,7 +103,7 @@ export const LabPage = () => {
           )}
 
           <div style={{ marginTop: "16px" }}>
-            <h2 style={{ fontSize: "18px", fontWeight: "600" }}>Items</h2>
+            <h2 style={{ fontSize: "18px", fontWeight: "600" }}>Services</h2>
             <div style={{ maxHeight: "400px", overflowY: "auto", border: "1px solid #ddd", padding: "8px" }}>
               {items.length > 0 ? (
                 items.map((item) => (
@@ -111,13 +111,13 @@ export const LabPage = () => {
                     <span>{item.name} - ${item.price}</span>
                     <div>
                       <button 
-                        style={{ backgroundColor: "#22c55e", color: "white", padding: "4px 8px", margin: "0 4px", border: "none", borderRadius: "4px" }} 
+                        style={{ backgroundColor: "#22c55e", color: "white", padding: "4px 8px", margin: "0 4px", border: "none", borderRadius: "4px" , cursor:"pointer"}} 
                         onClick={() => handleEdit(item)}
                       >
                         Edit
                       </button>
                       <button 
-                        style={{ backgroundColor: "#ef4444", color: "white", padding: "4px 8px", margin: "0 4px", border: "none", borderRadius: "4px" }} 
+                        style={{ backgroundColor: "#ef4444", color: "white", padding: "4px 8px", margin: "0 4px", border: "none", borderRadius: "4px" , cursor:"pointer" }} 
                         onClick={() => deleteItem(item.id)}
                       >
                         Delete

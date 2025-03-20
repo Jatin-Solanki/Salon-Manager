@@ -65,19 +65,19 @@ export const Expense = () => {
     <input
       type="text"
       placeholder="Expense Name"
-      style={{ border: "1px solid #ccc", padding: "8px", margin: "4px", display: "block", width: "100%" }}
+      style={{ border: "1px solid #ccc", padding: "8px", margin: "4px", display: "block", width: "95%" }}
       value={expense.name}
       onChange={(e) => setExpense({ ...expense, name: e.target.value })}
     />
     <input
       type="number"
       placeholder="Price"
-      style={{ border: "1px solid #ccc", padding: "8px", margin: "4px", display: "block", width: "100%" }}
+      style={{ border: "1px solid #ccc", padding: "8px", margin: "4px", display: "block", width: "95%" }}
       value={expense.price}
       onChange={(e) => setExpense({ ...expense, price: e.target.value })}
     />
     <button 
-      style={{ backgroundColor: "#3b82f6", color: "white", padding: "8px", borderRadius: "4px", border: "none", margin: "4px", width: "100%" }}
+      style={{ backgroundColor: "#3b82f6", color: "white", padding: "8px", borderRadius: "4px", border: "none", margin: "4px", width: "100%" , cursor:"pointer" }}
       onClick={addExpense}
     >
       Add Expense
@@ -86,18 +86,18 @@ export const Expense = () => {
     <h3 style={{ fontSize: "16px", fontWeight: "600", marginTop: "16px" }}>Fetch Total Expense</h3>
     <input 
       type="date" 
-      style={{ border: "1px solid #ccc", padding: "8px", margin: "4px", display: "block", width: "100%" }}
+      style={{ border: "1px solid #ccc", padding: "8px", margin: "4px", display: "block", width: "95%" }}
       value={startDate} 
       onChange={(e) => setStartDate(e.target.value)} 
     />
     <input 
       type="date" 
-      style={{ border: "1px solid #ccc", padding: "8px", margin: "4px", display: "block", width: "100%" }}
+      style={{ border: "1px solid #ccc", padding: "8px", margin: "4px", display: "block", width: "95%" }}
       value={endDate} 
       onChange={(e) => setEndDate(e.target.value)} 
     />
     <button 
-      style={{ backgroundColor: "#facc15", color: "white", padding: "8px", borderRadius: "4px", border: "none", margin: "4px", width: "100%" }}
+      style={{ backgroundColor: "#facc15", color: "white", padding: "8px", borderRadius: "4px", border: "none", margin: "4px", width: "100%", cursor:"pointer" }}
       onClick={fetchTotalExpense}
     >
       Get Total Expense
