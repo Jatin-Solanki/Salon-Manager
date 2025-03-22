@@ -23,11 +23,11 @@
     /* background-color: bisque; */
     /* margin-left: 430px; */
     position: absolute;
-    right: 6px;
+    right: 30px;
     /* margin-right: 40px; */
-    max-height: 180px; /* Limit expansion */
+    max-height: 300px; /* Limit expansion */
     overflow-y: auto;
-    top: 200px;
+    top: 190px;
 }
 .selected-services h2{
     margin-bottom: 6px;
@@ -39,6 +39,7 @@
 }
 .customer-details{
     position: absolute;
+    right: 30px;
     /* left: 150px;
     top: 470px; */
 }
@@ -49,8 +50,8 @@
 .discount{
    
     position: absolute;
-    top:430px;
-    right:0px;
+    top:210px;
+    right:270px;
 }
 .complete-purchase{
     /* margin-left: 430px; */
@@ -63,7 +64,7 @@
     margin-top: 7px;
 }
 .service-name{
-    font-size: larger;
+    font-size: medium;
     display: inline-block;
     margin-bottom: 5px;
     margin-top: 5px;

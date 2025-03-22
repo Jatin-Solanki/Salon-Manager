@@ -1,7 +1,6 @@
-
 import React, { useState, useEffect } from "react";
 import { db } from "../../firebaseConfig";
-import { collection, getDocs, query, where, Timestamp } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 
 export const History = () => {
   const [sales, setSales] = useState([]);
@@ -38,6 +37,17 @@ export const History = () => {
     fetchSales();
   }, []);
 
+  const formatServices = (services) => {
+    if (!services) return "N/A";
+    const serviceCount = {};
+    services.forEach(service => {
+      serviceCount[service.name] = (serviceCount[service.name] || 0) + 1;
+    });
+    return Object.entries(serviceCount)
+      .map(([name, count]) => (count > 1 ? `${name} x${count}` : name))
+      .join(", ");
+  };
+
   return (
     <div style={{ padding: "16px", maxWidth: "32rem", margin: "0 auto" }}>
       <h2 style={{ fontSize: "1.125rem", fontWeight: "600" }}>History</h2>
@@ -63,7 +73,7 @@ export const History = () => {
                     {barbers.find(b => b.id === sale.barberId)?.name || "Unknown"}
                   </td>
                   <td style={{ border: "1px solid #ccc", padding: "8px" }}>
-                    {sale.services?.map(s => s.name).join(", ") || "N/A"}
+                    {formatServices(sale.services)}
                   </td>
                   <td style={{ border: "1px solid #ccc", padding: "8px" }}>{sale.paymentMode}</td>
                   <td style={{ border: "1px solid #ccc", padding: "8px" }}>${sale.total?.toFixed(2)}</td>
@@ -80,5 +90,3 @@ export const History = () => {
     </div>
   );
 };
-
-

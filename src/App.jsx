@@ -10,7 +10,7 @@ import { Expense } from "./pages/Expense/AddExpense";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AppLayout } from "./Layout/applayout";
 import { History } from "./pages/History/History";
-
+import { EditHistory } from "./pages/EditHistory/EditHistory";
 export const App=()=>{
   const router= createBrowserRouter([
     {
@@ -40,6 +40,10 @@ export const App=()=>{
         {
           path:"/history",
           element:<History/>
+        },
+        {
+          path:"/edithistory",
+          element:<EditHistory/>
         },
       ]
     }

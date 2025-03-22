@@ -71,21 +71,26 @@
 }
 .nav-link{
     text-decoration: none;
-    color: black;
+    color: rgb(251, 250, 250);
     display: inline-block;
     /* display: flex;
     align-items: center;
     justify-content: center; */
-    height: 60px;
+    height: 40px;
     width: 90%;
     text-align: center;
     /* padding-top: 22px; */
     margin-top: 20px;
-    background-color: antiquewhite;
+    /* background-color: antiquewhite; */
 }
 
 .active{
-    color: rgb(86, 3, 158);
+    color: rgb(9, 9, 9);
+    height: 60px;
+    width: 90%;
+    background-color: antiquewhite;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
 }
 /* .NavBarOption{
     

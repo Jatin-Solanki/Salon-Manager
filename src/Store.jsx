@@ -199,7 +199,7 @@ export const StoreApp = () => {
   return (
     <div className="home">
 
-  <div style={{display:"flex"}} >
+  <div style={{display:"flex" , width:"1200px"}} >
 
 
     <div
@@ -212,7 +212,7 @@ export const StoreApp = () => {
         padding: "20px",
         position:"relative",
         top:"0px",
-        
+        width:"700px"
         // overflow-y: auto; /* Allows scrolling when needed */
       }}
     >
@@ -295,60 +295,74 @@ export const StoreApp = () => {
     </div>
 
   <div className="merge">
+  
   <div
-          className="selected-services"
-          style={{
-            backgroundColor: "#f8f9fa",
-            padding: "15px",
-            borderRadius: "10px",
-            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-            maxWidth: "400px", // Adjust width for better layout
-            margin: "20px auto", // Centering
-          }}
-        >
-          <h2
-            className="text-lg font-semibold"
-            style={{
-              textAlign: "center",
-              marginBottom: "15px",
-              borderBottom: "2px solid #ddd",
-              paddingBottom: "5px",
-            }}
-          >
-            Selected Services
-          </h2>
+  className="selected-services"
+  style={{
+    backgroundColor: "#f8f9fa",
+    padding: "15px",
+    borderRadius: "10px",
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+    maxWidth: "400px",
+    margin: "20px auto",
+  }}
+>
+  <h2
+    className="text-lg font-semibold"
+    style={{
+      textAlign: "center",
+      marginBottom: "15px",
+      borderBottom: "2px solid #ddd",
+      paddingBottom: "5px",
+    }}
+  >
+    Selected Services
+  </h2>
 
-          {selectedItems.map((item, index) => (
-            <div
-              key={index}
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                padding: "10px",
-                backgroundColor: "#fff",
-                borderRadius: "5px",
-                boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-                marginBottom: "10px",
-              }}
-            >
-              <span style={{ fontSize: "16px", fontWeight: "500" }}>
-                {item.name} - ${item.price}
-              </span>
-              <IoIosRemoveCircle
-                onClick={() => removeSelectedItem(index)}
-                size={25}
-                style={{
-                  cursor: "pointer",
-                  color: "#d9534f",
-                  transition: "transform 0.2s ease-in-out",
-                }}
-                onMouseOver={(e) => (e.target.style.transform = "scale(1.1)")}
-                onMouseOut={(e) => (e.target.style.transform = "scale(1)")}
-              />
-            </div>
-          ))}
-        </div>
+  {Object.entries(
+    selectedItems.reduce((acc, item) => {
+      acc[item.name] = acc[item.name]
+        ? { ...acc[item.name], count: acc[item.name].count + 1 }
+        : { ...item, count: 1 };
+      return acc;
+    }, {})
+  ).map(([name, item], index) => (
+    <div
+      key={index}
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        padding: "10px",
+        backgroundColor: "#fff",
+        borderRadius: "5px",
+        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+        marginBottom: "10px",
+      }}
+    >
+      <span style={{ fontSize: "16px", fontWeight: "500" }}>
+        {name} x{item.count} - ${item.price * item.count}
+      </span>
+      <IoIosRemoveCircle
+        onClick={() =>
+          setSelectedItems((prev) => {
+            const indexToRemove = prev.findIndex((i) => i.name === item.name);
+            return prev.filter((_, idx) => idx !== indexToRemove);
+          })
+        }
+        size={25}
+        style={{
+          cursor: "pointer",
+          color: "#d9534f",
+          transition: "transform 0.2s ease-in-out",
+        }}
+        onMouseOver={(e) => (e.target.style.transform = "scale(1.1)")}
+        onMouseOut={(e) => (e.target.style.transform = "scale(1)")}
+      />
+    </div>
+  ))}
+</div>
+
 
 <div
   className="customer-details"
@@ -450,75 +464,77 @@ export const StoreApp = () => {
 
 
 {/* Discount Section */}
-        <div
-          className="discount"
-          style={{
-            backgroundColor: "#fff",
-            padding: "15px",
-            borderRadius: "10px",
-            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-            maxWidth: "400px",
-            margin: "20px auto",
-            textAlign: "center",
-          }}
-        >
-          <h2
-            className="text-lg font-semibold"
-            style={{
-              marginBottom: "15px",
-              borderBottom: "2px solid #ddd",
-              paddingBottom: "5px",
-            }}
-          >
-            Discount
-          </h2>
+<div
+  className="discount"
+  style={{
+    backgroundColor: "#fff",
+    padding: "10px", // Reduced padding
+    borderRadius: "8px", // Slightly smaller border radius
+    boxShadow: "0 3px 6px rgba(0, 0, 0, 0.1)",
+    maxWidth: "250px", // Reduced width
+    margin: "10px", // Reduced margin
+    textAlign: "center",
+  }}
+>
+  <h2
+    className="text-md font-semibold"
+    style={{
+      marginBottom: "10px", // Reduced spacing
+      borderBottom: "1px solid #ddd",
+      paddingBottom: "3px",
+      fontSize: "large", // Slightly smaller font
+    }}
+  >
+    Discount
+  </h2>
 
-          <input
-            type="number"
-            placeholder={discountpercent}
-            className="border p-2 m-1"
-            onChange={(e) => setDiscount(parseFloat(e.target.value) || 0)}
-            style={{
-              width: "90%",
-              padding: "10px",
-              borderRadius: "5px",
-              border: "1px solid #ccc",
-              marginBottom: "10px",
-            }}
-          />
+  <input
+    type="number"
+    placeholder={discountpercent}
+    className="border p-1 m-1"
+    onChange={(e) => setDiscount(parseFloat(e.target.value) || 0)}
+    style={{
+      width: "85%", // Slightly smaller width
+      padding: "6px", // Reduced padding
+      borderRadius: "4px",
+      border: "1px solid #ccc",
+      marginBottom: "6px", // Reduced spacing
+      fontSize: "13px",
+    }}
+  />
 
-          <p
-            style={{
-              fontSize: "18px",
-              fontWeight: "bold",
-              color: "#333",
-              marginBottom: "15px",
-            }}
-          >
-            Total: $
-            {selectedItems.reduce((acc, item) => acc + item.price, 0) *
-              (1 - discount / 100)}
-          </p>
+  <p
+    style={{
+      fontSize: "16px", // Slightly smaller font
+      fontWeight: "bold",
+      color: "#333",
+      marginBottom: "10px", // Reduced margin
+    }}
+  >
+    Total: $ 
+    {selectedItems.reduce((acc, item) => acc + item.price, 0) * (1 - discount / 100)}
+  </p>
 
-          <button
-            className="complete-purchase"
-            onClick={handlePurchase}
-            style={{
-              backgroundColor: "#28a745",
-              color: "white",
-              padding: "10px 20px",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-              fontSize: "16px",
-              transition: "background 0.3s ease-in-out",
-            }}
-            onMouseOver={(e) => (e.target.style.backgroundColor = "#218838")}
-            onMouseOut={(e) => (e.target.style.backgroundColor = "#28a745")}
-          >
-            Complete Purchase
-          </button>
-        </div>
+  <button
+    className="complete-purchase"
+    onClick={handlePurchase}
+    style={{
+      backgroundColor: "#28a745",
+      color: "white",
+      padding: "8px 15px", // Reduced button size
+      border: "none",
+      borderRadius: "4px",
+      cursor: "pointer",
+      fontSize: "14px",
+      transition: "background 0.3s ease-in-out",
+    }}
+    onMouseOver={(e) => (e.target.style.backgroundColor = "#218838")}
+    onMouseOut={(e) => (e.target.style.backgroundColor = "#28a745")}
+  >
+    Complete Purchase
+  </button>
+</div>
+
 
       </div>
 

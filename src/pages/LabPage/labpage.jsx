@@ -74,7 +74,7 @@ export const LabPage = () => {
           </h2>
           <input
             type="text"
-            placeholder="Item Name"
+            placeholder="Service Name"
             style={{ border: "1px solid #ccc", padding: "8px", margin: "4px", display: "block", width: "100%" }}
             value={newItem.name}
             onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
