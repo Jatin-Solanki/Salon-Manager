@@ -13,7 +13,8 @@ export const Publication = () => {
   const [totalFilteredSales, setTotalFilteredSales] = useState(0);
   const [barberSales, setBarberSales] = useState({});
   const [serviceSales, setServiceSales] = useState({});
-
+  const [totalCashPayment, setTotalCashPayment] = useState(0);
+  const [totalOnlinePayment, setTotalOnlinePayment] = useState(0);
 
   useEffect(() => {
     const fetchBarbers = async () => {
@@ -45,6 +46,19 @@ export const Publication = () => {
       const total = salesData.reduce((acc, sale) => acc + (sale.total || 0), 0);
       setTotalFilteredSales(total);
 
+      let cashTotal = 0;
+      let onlineTotal = 0;
+
+      salesData.forEach(sale => {
+        const paymentMode = sale.paymentMode ? sale.paymentMode.toLowerCase() : "";
+        const saleTotal = Number(sale.total) || 0;
+  
+        if (paymentMode === "cash") cashTotal += saleTotal;
+        if (paymentMode === "online") onlineTotal += saleTotal;
+      });
+      setTotalCashPayment(cashTotal);
+      setTotalOnlinePayment(onlineTotal);
+
       // Calculate sales per barber
       const barberSalesMap = {};
       const serviceSalesMap = {};
@@ -59,6 +73,8 @@ export const Publication = () => {
           });
         }
       });
+      console.log("Total Cash Payment:", cashTotal);
+      console.log("Total Online Payment:", onlineTotal);
       setBarberSales(barberSalesMap);
       setServiceSales(serviceSalesMap);
     } catch (error) {
@@ -109,6 +125,13 @@ export const Publication = () => {
   <div style={{ marginTop: "16px", fontWeight: "bold" }}>
     Total Sales: <span style={{ color: "#2563EB" }}>${totalFilteredSales.toFixed(2)}</span>
   </div>
+
+      <div style={{ marginTop: "16px", fontWeight: "bold" }}>
+        Total Cash Payments: <span style={{ color: "#10B981" }}>${totalCashPayment.toFixed(2)}</span>
+      </div>
+      <div style={{ marginTop: "16px", fontWeight: "bold" }}>
+        Total Online Payments: <span style={{ color: "#F59E0B" }}>${totalOnlinePayment.toFixed(2)}</span>
+      </div>
 
   <div style={{ marginTop: "16px", border: "1px solid #ccc", padding: "16px", borderRadius: "8px" }}>
     <h3 style={{ fontWeight: "600" }}>Sales per Service</h3>

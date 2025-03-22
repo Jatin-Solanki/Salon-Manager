@@ -516,23 +516,22 @@ export const StoreApp = () => {
   </p>
 
   <button
-    className="complete-purchase"
-    onClick={handlePurchase}
-    style={{
-      backgroundColor: "#28a745",
-      color: "white",
-      padding: "8px 15px", // Reduced button size
-      border: "none",
-      borderRadius: "4px",
-      cursor: "pointer",
-      fontSize: "14px",
-      transition: "background 0.3s ease-in-out",
-    }}
-    onMouseOver={(e) => (e.target.style.backgroundColor = "#218838")}
-    onMouseOut={(e) => (e.target.style.backgroundColor = "#28a745")}
-  >
-    Complete Purchase
-  </button>
+  className="complete-purchase"
+  onClick={handlePurchase}
+  disabled={selectedItems.length === 0 || !customer.name || !customer.phone || !customer.barber}
+  style={{
+    backgroundColor: selectedItems.length === 0 || !customer.name || !customer.phone || !customer.barber ? "#ccc" : "#28a745",
+    color: "white",
+    padding: "8px 15px",
+    border: "none",
+    borderRadius: "4px",
+    cursor: selectedItems.length === 0 || !customer.name || !customer.phone || !customer.barber ? "not-allowed" : "pointer",
+    fontSize: "14px",
+    transition: "background 0.3s ease-in-out",
+  }}
+>
+  Complete Purchase
+</button>
 </div>
 
 

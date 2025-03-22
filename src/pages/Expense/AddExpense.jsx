@@ -73,13 +73,13 @@ export const Expense = () => {
   return (
     <div style={{ padding: "20px", border: "2px solid #ccc", borderRadius: "10px", maxWidth: "600px", margin: "20px auto", backgroundColor: "#f9f9f9" }}>
       <h2 style={{ textAlign: "center", color: "#333" }}>Add / Edit Expense</h2>
-      <input style={{ width: "100%", padding: "10px", marginBottom: "10px", borderRadius: "5px", border: "1px solid #ccc" }} type="text" placeholder="Expense Name" value={expense.name} onChange={(e) => setExpense({ ...expense, name: e.target.value })} />
-      <input style={{ width: "100%", padding: "10px", marginBottom: "10px", borderRadius: "5px", border: "1px solid #ccc" }} type="number" placeholder="Price" value={expense.price} onChange={(e) => setExpense({ ...expense, price: e.target.value })} />
-      <input style={{ width: "100%", padding: "10px", marginBottom: "10px", borderRadius: "5px", border: "1px solid #ccc" }} type="text" placeholder="Owner" value={owner} onChange={(e) => setOwner(e.target.value)} />
+      <input style={{ width: "95%", padding: "10px", marginBottom: "10px", borderRadius: "5px", border: "1px solid #ccc" }} type="text" placeholder="Expense Name" value={expense.name} onChange={(e) => setExpense({ ...expense, name: e.target.value })} />
+      <input style={{ width: "95%", padding: "10px", marginBottom: "10px", borderRadius: "5px", border: "1px solid #ccc" }} type="number" placeholder="Price" value={expense.price} onChange={(e) => setExpense({ ...expense, price: e.target.value })} />
+      <input style={{ width: "95%", padding: "10px", marginBottom: "10px", borderRadius: "5px", border: "1px solid #ccc" }} type="text" placeholder="Owner" value={owner} onChange={(e) => setOwner(e.target.value)} />
       <button style={{ width: "100%", padding: "10px", backgroundColor: "#4CAF50", color: "white", border: "none", borderRadius: "5px", cursor: "pointer" }} onClick={addOrUpdateExpense}>{editingId ? "Update Expense" : "Add Expense"}</button>
 
       <h3 style={{ marginTop: "20px", color: "#333" }}>Filter Expenses</h3>
-      <input style={{ width: "48%", padding: "10px", marginBottom: "10px", borderRadius: "5px", border: "1px solid #ccc", marginRight: "4%" }} type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+      <input style={{ width: "48%", padding: "10px", marginBottom: "10px", borderRadius: "5px", border: "1px solid #ccc" }} type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
       <input style={{ width: "48%", padding: "10px", marginBottom: "10px", borderRadius: "5px", border: "1px solid #ccc" }} type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
       <button style={{ width: "100%", padding: "10px", backgroundColor: "#2196F3", color: "white", border: "none", borderRadius: "5px", cursor: "pointer" }} onClick={fetchFilteredExpenses}>Fetch Expenses</button>
       
