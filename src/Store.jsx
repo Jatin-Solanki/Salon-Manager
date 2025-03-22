@@ -26,6 +26,7 @@ export const StoreApp = () => {
   const [barbers, setBarbers] = useState([]);
   const [payment,setPayment]=useState("Select Payment Mode");
   const [discountpercent,setDiscountPercent]=useState("Discount%");
+  const [manualService, setManualService] = useState({ name: "", price: "" });
 
   useEffect(() => {
     const unsubscribeItems = onSnapshot(collection(db, "items"), (snapshot) => {
@@ -41,6 +42,13 @@ export const StoreApp = () => {
       unsubscribeBarbers();
     };
   }, []);
+
+  const addManualService = () => {
+    if (!manualService.name || !manualService.price) return;
+    const newService = { name: manualService.name, price: parseFloat(manualService.price) };
+    setSelectedItems([...selectedItems, newService]);
+    setManualService({ name: "", price: "" });
+  };
 
   const addItem = async () => {
     if (!newItem.name || !newItem.price) return;
@@ -255,6 +263,11 @@ export const StoreApp = () => {
               borderRadius: "5px",
             }}
           />
+        </div>
+        <div className="manual-service" style={{ display: "flex", alignItems:"center",justifyContent:"center", gap: "10px", marginBottom: "15px" , marginTop:"30px" }}>
+              <input type="text" placeholder="Service Name" value={manualService.name} onChange={(e) => setManualService({ ...manualService, name: e.target.value })} style={{ padding: "8px", border: "1px solid #ccc", borderRadius: "5px" }} />
+              <input type="number" placeholder="Price" value={manualService.price} onChange={(e) => setManualService({ ...manualService, price: e.target.value })} style={{ padding: "8px", border: "1px solid #ccc", borderRadius: "5px" }} />
+              <button onClick={addManualService} style={{ padding: "8px", borderRadius: "5px", backgroundColor: "#28a745", color: "white", border: "none", cursor: "pointer" }}>Enter</button>
         </div>
       </div>
 

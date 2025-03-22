@@ -11,6 +11,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AppLayout } from "./Layout/applayout";
 import { History } from "./pages/History/History";
 import { EditHistory } from "./pages/EditHistory/EditHistory";
+import { SignUp } from "./components/Navbar/signup";
+import { SignIn } from "./components/Navbar/login";
 export const App=()=>{
   const router= createBrowserRouter([
     {
@@ -44,6 +46,14 @@ export const App=()=>{
         {
           path:"/edithistory",
           element:<EditHistory/>
+        },
+        {
+          path:"/signup",
+          element:<SignUp/>
+        },
+         {
+          path:"/signup",
+          element:<SignUp/>
         },
       ]
     }

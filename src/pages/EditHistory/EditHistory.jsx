@@ -74,158 +74,80 @@ export const EditHistory = () => {
   };
 
   return (
-    <div style={{ 
+    <div style={{
+        position:"absolute",
+        right:"100px",
         padding: "16px", 
-        maxWidth: "32rem", 
+        maxWidth: "64rem",  // Increased width
         margin: "0 auto", 
         fontFamily: "Arial, sans-serif", 
         backgroundColor: "#f9f9f9",
         borderRadius: "8px"
-      }}>
-        <h2 style={{ fontSize: "1.25rem", fontWeight: "600", color: "#333" }}>History</h2>
-      
+    }}>
+        <h2 style={{ fontSize: "1.5rem", fontWeight: "600", color: "#333" }}>History</h2>
+    
         <div style={{ 
-          marginTop: "16px", 
-          border: "1px solid #ccc", 
-          padding: "16px", 
-          borderRadius: "8px", 
-          backgroundColor: "#fff", 
-          boxShadow: "0px 2px 5px rgba(0,0,0,0.1)"
-        }}>
-          <h3 style={{ fontWeight: "600", marginBottom: "8px", color: "#555" }}>Latest Sales Table</h3>
-          <table style={{ 
-            width: "100%", 
-            borderCollapse: "collapse", 
-            border: "1px solid #ccc", 
-            marginTop: "8px", 
-            backgroundColor: "#fff" 
-          }}>
-            <thead>
-              <tr style={{ backgroundColor: "#E5E7EB", textAlign: "left" }}>
-                <th style={{ padding: "8px", borderBottom: "2px solid #ccc" }}>Date</th>
-                <th style={{ padding: "8px", borderBottom: "2px solid #ccc" }}>Barber</th>
-                <th style={{ padding: "8px", borderBottom: "2px solid #ccc" }}>Services</th>
-                <th style={{ padding: "8px", borderBottom: "2px solid #ccc" }}>Payment Mode</th>
-                <th style={{ padding: "8px", borderBottom: "2px solid #ccc" }}>Total Amount</th>
-                <th style={{ padding: "8px", borderBottom: "2px solid #ccc" }}>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {sales.length > 0 ? (
-                sales.map(sale => (
-                  <tr key={sale.id} style={{ borderBottom: "1px solid #ddd" }}>
-                    <td style={{ padding: "8px" }}>{sale.date?.toDate().toLocaleDateString()}</td>
-                    <td style={{ padding: "8px" }}>{barbers.find(b => b.id === sale.barberId)?.name || "Unknown"}</td>
-                    <td style={{ padding: "8px" }}>{sale.services.map(s => s.name).join(", ")}</td>
-                    <td style={{ padding: "8px" }}>{sale.paymentMode}</td>
-                    <td style={{ padding: "8px", fontWeight: "bold", color: "#007bff" }}>${sale.total?.toFixed(2)}</td>
-                    <td style={{ padding: "8px" }}>
-                      <button 
-                        onClick={() => handleEditClick(sale)} 
-                        style={{ 
-                          padding: "6px 12px", 
-                          border: "none", 
-                          backgroundColor: "#007bff", 
-                          color: "white", 
-                          borderRadius: "4px", 
-                          cursor: "pointer" 
-                        }}
-                      >
-                        Edit
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="6" style={{ textAlign: "center", padding: "12px", color: "#666" }}>No recent sales data available.</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      
-        {editingSale && (
-          <div style={{ 
             marginTop: "16px", 
-            padding: "16px", 
             border: "1px solid #ccc", 
+            padding: "16px", 
             borderRadius: "8px", 
             backgroundColor: "#fff", 
             boxShadow: "0px 2px 5px rgba(0,0,0,0.1)"
-          }}>
-            <h3 style={{ marginBottom: "8px", color: "#555" }}>Edit Sale</h3>
-            <input 
-              type="date" 
-              name="date" 
-              value={formData.date} 
-              onChange={handleChange} 
-              style={{ width: "100%", padding: "8px", marginBottom: "8px", border: "1px solid #ccc", borderRadius: "4px" }} 
-            />
-            <select 
-              name="barberId" 
-              value={formData.barberId} 
-              onChange={handleChange} 
-              style={{ width: "100%", padding: "8px", marginBottom: "8px", border: "1px solid #ccc", borderRadius: "4px" }}
-            >
-              {barbers.map(barber => (
-                <option key={barber.id} value={barber.id}>{barber.name}</option>
-              ))}
-            </select>
-            <input 
-              type="text" 
-              name="services" 
-              value={formData.services} 
-              onChange={handleChange} 
-              placeholder="Services (comma-separated)" 
-              style={{ width: "100%", padding: "8px", marginBottom: "8px", border: "1px solid #ccc", borderRadius: "4px" }}
-            />
-            <input 
-              type="text" 
-              name="paymentMode" 
-              value={formData.paymentMode} 
-              onChange={handleChange} 
-              placeholder="Payment Mode" 
-              style={{ width: "100%", padding: "8px", marginBottom: "8px", border: "1px solid #ccc", borderRadius: "4px" }}
-            />
-            <input 
-              type="number" 
-              name="total" 
-              value={formData.total} 
-              onChange={handleChange} 
-              placeholder="Total Amount" 
-              style={{ width: "100%", padding: "8px", marginBottom: "8px", border: "1px solid #ccc", borderRadius: "4px" }}
-            />
-            <button 
-              onClick={handleSave} 
-              style={{ 
-                padding: "8px 16px", 
-                backgroundColor: "#28a745", 
-                color: "white", 
-                border: "none", 
-                borderRadius: "4px", 
-                cursor: "pointer",
-                marginRight: "8px"
-              }}
-            >
-              Save
-            </button>
-            <button 
-              onClick={() => setEditingSale(null)} 
-              style={{ 
-                padding: "8px 16px", 
-                backgroundColor: "#dc3545", 
-                color: "white", 
-                border: "none", 
-                borderRadius: "4px", 
-                cursor: "pointer"
-              }}
-            >
-              Cancel
-            </button>
-          </div>
-        )}
-      </div>
+        }}>
+            <h3 style={{ fontWeight: "600", marginBottom: "8px", color: "#555" }}>Latest Sales Table</h3>
+            <table style={{ 
+                width: "100%", 
+                borderCollapse: "collapse", 
+                border: "1px solid #ccc", 
+                marginTop: "8px", 
+                backgroundColor: "#fff" 
+            }}>
+                <thead>
+                    <tr style={{ backgroundColor: "#E5E7EB", textAlign: "left" }}>
+                        <th style={{ padding: "12px", borderBottom: "2px solid #ccc", minWidth: "120px" }}>Date</th>
+                        <th style={{ padding: "12px", borderBottom: "2px solid #ccc", minWidth: "140px" }}>Barber</th>
+                        <th style={{ padding: "12px", borderBottom: "2px solid #ccc", minWidth: "180px" }}>Services</th>
+                        <th style={{ padding: "12px", borderBottom: "2px solid #ccc", minWidth: "140px" }}>Payment Mode</th>
+                        <th style={{ padding: "12px", borderBottom: "2px solid #ccc", minWidth: "120px" }}>Total Amount</th>
+                        <th style={{ padding: "12px", borderBottom: "2px solid #ccc", minWidth: "100px" }}>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {sales.length > 0 ? (
+                        sales.map(sale => (
+                            <tr key={sale.id} style={{ borderBottom: "1px solid #ddd" }}>
+                                <td style={{ padding: "12px" }}>{sale.date?.toDate().toLocaleDateString()}</td>
+                                <td style={{ padding: "12px" }}>{barbers.find(b => b.id === sale.barberId)?.name || "Unknown"}</td>
+                                <td style={{ padding: "12px" }}>{sale.services.map(s => s.name).join(", ")}</td>
+                                <td style={{ padding: "12px" }}>{sale.paymentMode}</td>
+                                <td style={{ padding: "12px", fontWeight: "bold", color: "#007bff" }}>${sale.total?.toFixed(2)}</td>
+                                <td style={{ padding: "12px" }}>
+                                    <button 
+                                        onClick={() => handleEditClick(sale)} 
+                                        style={{ 
+                                            padding: "8px 14px", 
+                                            border: "none", 
+                                            backgroundColor: "#007bff", 
+                                            color: "white", 
+                                            borderRadius: "4px", 
+                                            cursor: "pointer" 
+                                        }}
+                                    >
+                                        Edit
+                                    </button>
+                                </td>
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan="6" style={{ textAlign: "center", padding: "12px", color: "#666" }}>No recent sales data available.</td>
+                        </tr>
+                    )}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
       
   );
 };
