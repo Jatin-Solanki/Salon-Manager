@@ -135,7 +135,7 @@ export const Expense = () => {
                   </button>
                 )}
               </td>
-              <td style={{ padding: "10px" }}>${exp.price}</td>
+              <td style={{ padding: "10px" }}>Rs.{exp.price}</td>
               <td style={{ padding: "10px" }}>{exp.date ? new Date(exp.date.toMillis()).toLocaleDateString() : "No Date"}</td>
             </tr>
           ))}

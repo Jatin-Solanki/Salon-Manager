@@ -123,14 +123,14 @@ export const Publication = () => {
   </button>
 
   <div style={{ marginTop: "16px", fontWeight: "bold" }}>
-    Total Sales: <span style={{ color: "#2563EB" }}>${totalFilteredSales.toFixed(2)}</span>
+    Total Sales: <span style={{ color: "#2563EB" }}>Rs.{totalFilteredSales.toFixed(2)}</span>
   </div>
 
       <div style={{ marginTop: "16px", fontWeight: "bold" }}>
-        Total Cash Payments: <span style={{ color: "#10B981" }}>${totalCashPayment.toFixed(2)}</span>
+        Total Cash Payments: <span style={{ color: "#10B981" }}>Rs.{totalCashPayment.toFixed(2)}</span>
       </div>
       <div style={{ marginTop: "16px", fontWeight: "bold" }}>
-        Total Online Payments: <span style={{ color: "#F59E0B" }}>${totalOnlinePayment.toFixed(2)}</span>
+        Total Online Payments: <span style={{ color: "#F59E0B" }}>Rs.{totalOnlinePayment.toFixed(2)}</span>
       </div>
 
   <div style={{ marginTop: "16px", border: "1px solid #ccc", padding: "16px", borderRadius: "8px" }}>
@@ -138,7 +138,7 @@ export const Publication = () => {
     {Object.keys(serviceSales).length > 0 ? (
       <ul style={{ listStyleType: "disc", paddingLeft: "20px" }}>
         {Object.entries(serviceSales).map(([service, total]) => (
-          <li key={service}>{service || "Unknown"}: ${total.toFixed(2)}</li>
+          <li key={service}>{service || "Unknown"}: Rs.{total.toFixed(2)}</li>
         ))}
       </ul>
     ) : (
@@ -168,7 +168,7 @@ export const Publication = () => {
     {Object.keys(barberSales).length > 0 ? (
       <ul style={{ listStyleType: "disc", paddingLeft: "20px" }}>
         {Object.entries(barberSales).map(([barberId, total]) => (
-          <li key={barberId}>{barbers.find(b => b.id === barberId)?.name || "Unknown"}: ${total.toFixed(2)}</li>
+          <li key={barberId}>{barbers.find(b => b.id === barberId)?.name || "Unknown"}: Rs.{total.toFixed(2)}</li>
         ))}
       </ul>
     ) : (
@@ -198,7 +198,7 @@ export const Publication = () => {
                   <td>{barbers.find(b => b.id === sale.barberId)?.name || "Unknown"}</td>
                   <td>{sale.services ? formatServices(sale.services) : "N/A"}</td>
                   <td>{sale.paymentMode}</td>
-                  <td>${sale.total?.toFixed(2)}</td>
+                  <td>Rs.{sale.total?.toFixed(2)}</td>
                 </tr>
               ))
             ) : (

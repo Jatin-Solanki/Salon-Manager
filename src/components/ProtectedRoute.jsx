@@ -31,8 +31,8 @@ import { useAuth } from "/src/context/AuthContext";
 import { AppLayout } from "../Layout/applayout"; // Ensure correct import
 
 const userPermissions = {
-  "email1@example.com": ["/applayout/home", "/applayout/about", "/applayout/lab", "/applayout/history"],
-  "email2@example.com": ["all"], // Consistent structure
+  "scissorstyle@ramphal.com": ["/applayout/home", "/applayout/about", "/applayout/lab", "/applayout/history"],
+  "thorpower39@gmail.com": ["all"], // Consistent structure
 };
 
 export const ProtectedRoute = () => {

@@ -289,7 +289,7 @@ export const StoreApp = () => {
             
           }}
         >
-          <span onClick={() => setSelectedItems([...selectedItems, item])} className="service-name">{item.name} - ${item.price}</span>
+          <span onClick={() => setSelectedItems([...selectedItems, item])} className="service-name">{item.name} - Rs.{item.price}</span>
           <IoMdAddCircle
             style={{
               position: "absolute",
@@ -354,7 +354,7 @@ export const StoreApp = () => {
       }}
     >
       <span style={{ fontSize: "16px", fontWeight: "500" }}>
-        {name} x{item.count} - ${item.price * item.count}
+        {name} x{item.count} - Rs.{item.price * item.count}
       </span>
       <IoIosRemoveCircle
         onClick={() =>
@@ -524,7 +524,7 @@ export const StoreApp = () => {
       marginBottom: "10px", // Reduced margin
     }}
   >
-    Total: $ 
+    Total: Rs. 
     {selectedItems.reduce((acc, item) => acc + item.price, 0) * (1 - discount / 100)}
   </p>
 

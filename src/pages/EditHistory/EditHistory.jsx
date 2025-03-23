@@ -124,7 +124,7 @@ export const EditHistory = () => {
                                 <td style={{ padding: "12px" }}>{barbers.find(b => b.id === sale.barberId)?.name || "Unknown"}</td>
                                 <td style={{ padding: "12px" }}>{sale.services.map(s => s.name).join(", ")}</td>
                                 <td style={{ padding: "12px" }}>{sale.paymentMode}</td>
-                                <td style={{ padding: "12px", fontWeight: "bold", color: "#007bff" }}>${sale.total?.toFixed(2)}</td>
+                                <td style={{ padding: "12px", fontWeight: "bold", color: "#007bff" }}>Rs.{sale.total?.toFixed(2)}</td>
                                 <td style={{ padding: "12px" }}>
                                     <button 
                                         onClick={() => handleEditClick(sale)} 

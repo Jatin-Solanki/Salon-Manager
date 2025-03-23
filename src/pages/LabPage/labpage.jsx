@@ -108,7 +108,7 @@ export const LabPage = () => {
               {items.length > 0 ? (
                 items.map((item) => (
                   <div key={item.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #ccc", padding: "8px" }}>
-                    <span>{item.name} - ${item.price}</span>
+                    <span>{item.name} - Rs.{item.price}</span>
                     <div>
                       <button 
                         style={{ backgroundColor: "#22c55e", color: "white", padding: "4px 8px", margin: "0 4px", border: "none", borderRadius: "4px" , cursor:"pointer"}} 

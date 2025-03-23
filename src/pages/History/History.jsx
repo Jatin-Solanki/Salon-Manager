@@ -77,7 +77,7 @@ export const History = () => {
                             </td>
                             <td style={{ border: "1px solid #ccc", padding: "12px" }}>{sale.paymentMode}</td>
                             <td style={{ border: "1px solid #ccc", padding: "12px", fontWeight: "bold", color: "#007bff" }}>
-                                ${sale.total?.toFixed(2)}
+                                Rs.{sale.total?.toFixed(2)}
                             </td>
                         </tr>
                     ))
