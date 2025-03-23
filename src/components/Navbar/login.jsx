@@ -121,21 +121,66 @@ export const SignIn = () => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate("/"); // Redirect to home after login
+      navigate("/applayout"); // Redirect to home after login
     } catch (err) {
       setError("Invalid email or password");
     }
   };
 
   return (
-    <div>
-      <h2>Sign In</h2>
-      {error && <p>{error}</p>}
-      <form onSubmit={handleSignIn}>
-        <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-        <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
-        <button type="submit">Sign In</button>
+    <div style={{ 
+      maxWidth: "400px", 
+      margin: "50px auto", 
+      padding: "20px", 
+      borderRadius: "10px", 
+      boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", 
+      textAlign: "center",
+      backgroundColor: "#fff" 
+    }}>
+      <h2 style={{ color: "#333", marginBottom: "20px" }}>Sign In</h2>
+      {error && <p style={{ color: "red", fontSize: "14px" }}>{error}</p>}
+      <form onSubmit={handleSignIn} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+        <input 
+          type="email" 
+          placeholder="Email" 
+          onChange={(e) => setEmail(e.target.value)} 
+          style={{ 
+            padding: "10px", 
+            border: "1px solid #ccc", 
+            borderRadius: "5px", 
+            fontSize: "16px" 
+          }} 
+        />
+        <input 
+          type="password" 
+          placeholder="Password" 
+          onChange={(e) => setPassword(e.target.value)} 
+          style={{ 
+            padding: "10px", 
+            border: "1px solid #ccc", 
+            borderRadius: "5px", 
+            fontSize: "16px" 
+          }} 
+        />
+        <button 
+          type="submit" 
+          style={{ 
+            padding: "10px", 
+            border: "none", 
+            borderRadius: "5px", 
+            backgroundColor: "#007bff", 
+            color: "#fff", 
+            fontSize: "16px", 
+            cursor: "pointer",
+            transition: "background-color 0.3s"
+          }}
+          onMouseOver={(e) => e.target.style.backgroundColor = "#0056b3"}
+          onMouseOut={(e) => e.target.style.backgroundColor = "#007bff"}
+        >
+          Sign In
+        </button>
       </form>
     </div>
+    
   );
 };
