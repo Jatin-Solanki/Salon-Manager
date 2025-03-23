@@ -531,20 +531,41 @@ export const StoreApp = () => {
   <button
   className="complete-purchase"
   onClick={handlePurchase}
-  disabled={selectedItems.length === 0 || !customer.name || !customer.phone || !customer.barber}
+  disabled={
+    selectedItems.length === 0 ||
+    !customer.name ||
+    !customer.phone ||
+    !customer.barber ||
+    !customer.paymentMode
+  }
   style={{
-    backgroundColor: selectedItems.length === 0 || !customer.name || !customer.phone || !customer.barber ? "#ccc" : "#28a745",
+    backgroundColor:
+      selectedItems.length === 0 ||
+      !customer.name ||
+      !customer.phone ||
+      !customer.barber ||
+      !customer.paymentMode
+        ? "#ccc"
+        : "#28a745",
     color: "white",
     padding: "8px 15px",
     border: "none",
     borderRadius: "4px",
-    cursor: selectedItems.length === 0 || !customer.name || !customer.phone || !customer.barber ? "not-allowed" : "pointer",
+    cursor:
+      selectedItems.length === 0 ||
+      !customer.name ||
+      !customer.phone ||
+      !customer.barber ||
+      !customer.paymentMode
+        ? "not-allowed"
+        : "pointer",
     fontSize: "14px",
     transition: "background 0.3s ease-in-out",
   }}
 >
   Complete Purchase
 </button>
+
 </div>
 
 

@@ -47,14 +47,6 @@ export const App=()=>{
           path:"/edithistory",
           element:<EditHistory/>
         },
-        {
-          path:"/signup",
-          element:<SignUp/>
-        },
-         {
-          path:"/signup",
-          element:<SignUp/>
-        },
       ]
     }
   ]);

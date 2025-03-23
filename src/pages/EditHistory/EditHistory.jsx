@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../../firebaseConfig";
-import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
+import { collection, getDocs, doc, updateDoc, Timestamp } from "firebase/firestore";
 
 export const EditHistory = () => {
   const [sales, setSales] = useState([]);
   const [barbers, setBarbers] = useState([]);
   const [editingSale, setEditingSale] = useState(null);
   const [formData, setFormData] = useState({ date: "", barberId: "", services: "", paymentMode: "", total: "" });
-  
+
   useEffect(() => {
     const fetchBarbers = async () => {
       try {
@@ -42,16 +42,20 @@ export const EditHistory = () => {
   const handleEditClick = (sale) => {
     setEditingSale(sale);
     setFormData({
-      date: sale.date.toDate().toISOString().split('T')[0],
+      date: sale.date.toDate().toISOString().split("T")[0], // Convert Firestore timestamp to YYYY-MM-DD
       barberId: sale.barberId,
-      services: sale.services.map(s => s.name).join(", "),
+      services: sale.services.map(s => s.name).join(", "), // Convert array to comma-separated string
       paymentMode: sale.paymentMode,
-      total: sale.total,
+      total: sale.total.toString(), // Convert number to string for input field
     });
   };
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === "services" ? value : value,
+    }));
   };
 
   const handleSave = async () => {
@@ -59,14 +63,14 @@ export const EditHistory = () => {
       try {
         const saleRef = doc(db, "sales", editingSale.id);
         await updateDoc(saleRef, {
-          date: new Date(formData.date),
+          date: Timestamp.fromDate(new Date(formData.date)), // Convert back to Firestore Timestamp
           barberId: formData.barberId,
-          services: formData.services.split(", ").map(name => ({ name })),
+          services: formData.services.split(",").map(name => ({ name: name.trim() })), // Convert string back to array
           paymentMode: formData.paymentMode,
-          total: parseFloat(formData.total),
+          total: parseFloat(formData.total), // Convert back to number
         });
         setEditingSale(null);
-        window.location.reload();
+        window.location.reload(); // Refresh to show updates
       } catch (error) {
         console.error("Error updating sale: ", error);
       }
@@ -78,14 +82,14 @@ export const EditHistory = () => {
         position:"absolute",
         right:"100px",
         padding: "16px", 
-        maxWidth: "64rem",  // Increased width
+        maxWidth: "64rem",
         margin: "0 auto", 
         fontFamily: "Arial, sans-serif", 
         backgroundColor: "#f9f9f9",
         borderRadius: "8px"
     }}>
         <h2 style={{ fontSize: "1.5rem", fontWeight: "600", color: "#333" }}>History</h2>
-    
+
         <div style={{ 
             marginTop: "16px", 
             border: "1px solid #ccc", 
@@ -146,8 +150,111 @@ export const EditHistory = () => {
                 </tbody>
             </table>
         </div>
-    </div>
-    
+
+        {editingSale && (
+        <div style={{
+          marginTop: "16px",
+          padding: "16px",
+          backgroundColor: "#fff",
+          borderRadius: "8px",
+          boxShadow: "0px 2px 5px rgba(0,0,0,0.1)",
+          maxWidth: "400px"
+      }}>
+          <h3 style={{ fontSize: "1.2rem", fontWeight: "600", color: "#333", marginBottom: "10px" }}>Edit Sale</h3>
+          
+          <input 
+              type="date" 
+              name="date" 
+              value={formData.date} 
+              onChange={handleChange} 
+              style={{
+                  width: "100%",
+                  padding: "8px",
+                  marginBottom: "10px",
+                  border: "1px solid #ccc",
+                  borderRadius: "4px"
+              }}
+          />
+          
+          <input 
+              type="text" 
+              name="services" 
+              value={formData.services} 
+              onChange={handleChange} 
+              placeholder="Services (comma-separated)" 
+              style={{
+                  width: "100%",
+                  padding: "8px",
+                  marginBottom: "10px",
+                  border: "1px solid #ccc",
+                  borderRadius: "4px"
+              }}
+          />
+          
+          <input 
+              type="text" 
+              name="paymentMode" 
+              value={formData.paymentMode} 
+              onChange={handleChange} 
+              placeholder="Payment Mode"
+              style={{
+                  width: "100%",
+                  padding: "8px",
+                  marginBottom: "10px",
+                  border: "1px solid #ccc",
+                  borderRadius: "4px"
+              }}
+          />
+          
+          <input 
+              type="number" 
+              name="total" 
+              value={formData.total} 
+              onChange={handleChange} 
+              placeholder="Total Amount"
+              style={{
+                  width: "100%",
+                  padding: "8px",
+                  marginBottom: "10px",
+                  border: "1px solid #ccc",
+                  borderRadius: "4px"
+              }}
+          />
       
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <button 
+                  onClick={handleSave} 
+                  style={{
+                      padding: "8px 14px",
+                      backgroundColor: "#28a745",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "4px",
+                      cursor: "pointer",
+                      fontWeight: "600"
+                  }}
+              >
+                  Save
+              </button>
+      
+              <button 
+                  onClick={() => setEditingSale(null)} 
+                  style={{
+                      padding: "8px 14px",
+                      backgroundColor: "#dc3545",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "4px",
+                      cursor: "pointer",
+                      fontWeight: "600"
+                  }}
+              >
+                  Cancel
+              </button>
+          </div>
+      </div>
+      
+        )}
+    </div>
   );
 };
