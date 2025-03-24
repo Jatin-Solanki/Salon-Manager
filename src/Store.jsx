@@ -205,7 +205,7 @@ export const StoreApp = () => {
   );
 
   return (
-    <div className="home">
+  <div className="home">
 
   <div style={{display:"flex" , width:"1200px"}} >
 

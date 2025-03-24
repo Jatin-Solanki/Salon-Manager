@@ -141,7 +141,7 @@ export const SignIn = () => {
         top: "80px"
       }}>
         <div>
-          <img src="./public/logo.png" height={"60px"} alt="" />
+          <img src="/logo.png" height={"60px"} alt="" />
           <h1 style={{ margin: "20px" }}>Scissor & Style</h1>
         </div>
         <h2 style={{ color: "#333", marginBottom: "20px" }}>Log In</h2>

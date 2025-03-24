@@ -23,7 +23,7 @@
     /* background-color: bisque; */
     /* margin-left: 430px; */
     position: absolute;
-    right: 30px;
+    right: 40px;
     /* margin-right: 40px; */
     max-height: 300px; /* Limit expansion */
     overflow-y: auto;
@@ -51,7 +51,7 @@
    
     position: absolute;
     top:210px;
-    right:270px;
+    right:250px;
 }
 .complete-purchase{
     /* margin-left: 430px; */
@@ -69,7 +69,7 @@
     margin-bottom: 5px;
     margin-top: 5px;
     cursor: pointer;
-    height: 40px;
+    height: 70px;
 }
 .search-service{
     height: 20px;

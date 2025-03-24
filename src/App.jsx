@@ -12,6 +12,7 @@ import { History } from "./pages/History/History";
 import { EditHistory } from "./pages/EditHistory/EditHistory";
 import { SignIn } from "./components/Navbar/login";
 import { AuthProvider } from "./context/AuthContext";
+import { Client } from "./pages/Client/Client";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,7 @@ const router = createBrowserRouter([
       { path: "expense", element: <Expense /> },
       { path: "history", element: <History /> },
       { path: "edithistory", element: <EditHistory /> },
+      { path: "customers", element: <Client/> },
     ],
   },
 ]);

@@ -40,7 +40,7 @@ export const Navbar=({titles})=>{
                     <nav
                         style={{
                             position: "absolute",
-                            bottom: "15px",
+                            top: "15px",
                             left: "10px",
                             display: "flex",
                             alignItems: "center",
@@ -50,7 +50,6 @@ export const Navbar=({titles})=>{
                             borderRadius: "8px",
                         }}
                         >
-                        {/* <RiLogoutBoxFill size={30} color="white" /> */}
                         {user && (
                             <button
                             onClick={() => signOut(auth)}
