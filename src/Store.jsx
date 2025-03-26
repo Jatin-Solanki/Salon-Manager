@@ -25,7 +25,8 @@ export const StoreApp = () => {
   const [editingBarber, setEditingBarber] = useState(null);
   const [barbers, setBarbers] = useState([]);
   const [payment,setPayment]=useState("Select Payment Mode");
-  const [discountpercent,setDiscountPercent]=useState("Discount%");
+  const [discountType, setDiscountType] = useState("percentage");
+  const [discountValue, setDiscountValue] = useState(0);
   const [manualService, setManualService] = useState({ name: "", price: "" });
 
   useEffect(() => {
@@ -194,7 +195,14 @@ export const StoreApp = () => {
     }
   };
   
-  
+  const calculateTotal = () => {
+    let total = selectedItems.reduce((acc, item) => acc + item.price, 0);
+    if (discountType === "percentage") {
+      return total * (1 - discountValue / 100);
+    } else {
+      return total - discountValue;
+    }
+  };
 
   const removeSelectedItem = (indexToRemove) => {
     setSelectedItems(selectedItems.filter((_, index) => index !== indexToRemove));
@@ -204,377 +212,276 @@ export const StoreApp = () => {
     item.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const groupedSelectedItems = selectedItems.reduce((acc, item) => {
+    const existingItem = acc.find(i => i.name === item.name);
+    if (existingItem) {
+      existingItem.count += 1;
+    } else {
+      acc.push({ ...item, count: 1 });
+    }
+    return acc;
+  }, []);
+
   return (
-  <div className="home">
-
-  <div style={{display:"flex" , width:"1200px"}} >
-
-
-    <div
-      className="services-all"
-      style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(4, 1fr)", // 4 items per row
-        // gap: "20px",
-        gap: "10px 20px", // Reducing row gap while keeping column gap
-        padding: "20px",
-        position:"relative",
-        top:"0px",
-        width:"700px"
-        // overflow-y: auto; /* Allows scrolling when needed */
-      }}
-    >
-      <div
-        className="services"
-        style={{
-          gridColumn: "1 / -1", // Makes the search bar and heading span full width
-          gridRow: "1",
+    <div className="home" style={{
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      padding: "0px",
+      width: "800px",
+      // maxWidth: "1500px",
+      margin: "0 auto",
+      position:"absolute",
+      right:"0px"
+    }}>
+      
+      {/* Services & Selection Container */}
+      <div style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        width: "100%",
+        maxWidth: "800px",
+      }}>
+        
+        {/* Services Section */}
+        <div className="services-all" style={{
+          width: "100%",
+          maxWidth: "700px",
+          height: "500px",
+          overflowY: "auto",
+          padding: "15px",
           backgroundColor: "#f8f9fa",
-          padding: "20px",
-          borderRadius: "10px",
+          borderRadius: "12px",
           boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-          textAlign: "center",
-        }}
-      >
-        <h2 className="service-heading" style={{ marginBottom: "15px" }}>
-          Services
-        </h2>
-        <div
-          className="search-service"
-          style={{
+        }}>
+          <h2 className="service-heading" style={{
+            textAlign: "center",
+            fontSize: "20px",
+            fontWeight: "600",
+          }}>
+            Services
+          </h2>
+          
+          {/* Search Bar */}
+          <div className="search-service" style={{
             display: "flex",
-            justifyContent: "center",
             alignItems: "center",
+            justifyContent: "center",
+            gap: "8px",
+            marginBottom: "15px",
+          }}>
+            <FaSearch />
+            <input type="text" placeholder="Search Services..." className="search-service"
+              value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
+              style={{
+                flex: "1",
+                padding: "8px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+              }}
+            />
+          </div>
+    
+          {/* Manual Service Entry */}
+          <div className="manual-service" style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
             gap: "10px",
             marginBottom: "15px",
-          }}
-        >
-          <FaSearch />
-          <input
-            type="text"
-            placeholder="Search Services..."
-            className="search-service"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            style={{
-              flex: "0 1 300px",
-              padding: "8px",
-              border: "1px solid #ccc",
+            marginTop: "10px",
+          }}>
+            <input type="text" placeholder="Service Name" value={manualService.name}
+              onChange={(e) => setManualService({ ...manualService, name: e.target.value })}
+              style={{
+                padding: "8px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+                flex: "1",
+              }}
+            />
+            <input type="number" placeholder="Price" value={manualService.price}
+              onChange={(e) => setManualService({ ...manualService, price: e.target.value })}
+              style={{
+                padding: "8px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+                flex: "1",
+              }}
+            />
+            <button onClick={addManualService} style={{
+              backgroundColor: "#007bff",
+              color: "white",
+              padding: "8px 12px",
               borderRadius: "5px",
-            }}
-          />
+              border: "none",
+              cursor: "pointer",
+            }}>Enter</button>
+          </div>
+    
+          {/* Services List */}
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            gap: "10px",
+            overflowY: "auto",
+            maxHeight: "400px",
+          }}>
+            {filteredItems.map((item) => (
+              <div key={item.id} style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                padding: "12px",
+                border: "1px solid #ddd",
+                borderRadius: "6px",
+                backgroundColor: "#fff",
+                boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+                cursor: "pointer",
+                transition: "all 0.2s ease-in-out",
+              }}>
+                <span className="service-name" style={{ fontSize: "14px", fontWeight: "500" }}>{item.name} - Rs.{item.price}</span>
+                <IoMdAddCircle size={25} style={{
+                  cursor: "pointer",
+                  color: "#28a745",
+                  marginTop: "5px",
+                }} onClick={() => setSelectedItems([...selectedItems, item])} />
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="manual-service" style={{ display: "flex", alignItems:"center",justifyContent:"center", gap: "10px", marginBottom: "15px" , marginTop:"30px" }}>
-              <input type="text" placeholder="Service Name" value={manualService.name} onChange={(e) => setManualService({ ...manualService, name: e.target.value })} style={{ padding: "8px", border: "1px solid #ccc", borderRadius: "5px" }} />
-              <input type="number" placeholder="Price" value={manualService.price} onChange={(e) => setManualService({ ...manualService, price: e.target.value })} style={{ padding: "8px", border: "1px solid #ccc", borderRadius: "5px" }} />
-              <button onClick={addManualService} style={{ padding: "8px", borderRadius: "5px", backgroundColor: "#28a745", color: "white", border: "none", cursor: "pointer" }}>Enter</button>
-        </div>
-      </div>
+    
+        {/* Selected Services */}
+        <div className="selected-services" style={{
+          width: "60%",
+          marginTop: "20px",
+          padding: "15px",
+          backgroundColor: "#fff",
+          borderRadius: "12px",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+          maxHeight:"250px",
+          overflowY: "auto",
+        }}>
+          <h2 className="text-lg font-semibold">Selected Services</h2>
 
-      {filteredItems.map((item) => (
-        <div
-          key={item.id}
-          style={{
+          {groupedSelectedItems.map((item, index) => (
+          <div key={index}  style={{
             display: "flex",
-            flexDirection: "column",
             justifyContent: "space-between",
             alignItems: "center",
-            border: "1px solid #ddd",
-            padding: "15px",
-            borderRadius: "5px",
-            backgroundColor: "#fff",
-            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-            textAlign: "center",
-            position: "relative", // Needed for absolute positioning
-            
+            padding: "5px 0"}}>
+            <span>{item.name} {item.count > 1 ? `x${item.count}` : ""} - Rs.{item.price * item.count}</span>
+            <IoIosRemoveCircle style={{ cursor: "pointer", color: "red" }} size={25} onClick={() => removeSelectedItem(index)} />
+          </div>
+        ))}
+
+        </div>
+    
+        {/* Customer Details & Discount */}
+        <div style={{    display: "flex",
+            flexWrap: "wrap",
+            width: "100%",
+            marginTop: "20px",
+            gap: "20px",
+            justifyContent: "center", }}>
+          
+          {/* Customer Details */}
+          <div className="customer-details" style={{
+            flex: "1",
+            minWidth: "280px",
+            padding: "20px",
+            backgroundColor: "#ffffff",
+            borderRadius: "12px",
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+            transition: "transform 0.2s ease-in-out",
+          }}>
+            <h2 className="text-lg font-semibold" style={{fontSize: "18px",
+              fontWeight: "600",
+              marginBottom: "10px",
+              textAlign: "center",
+              color: "#333"}}>Customer Details</h2>
+            <input style={{
+            width: "100%",
+            padding: "10px",
+            marginBottom: "10px",
+            border: "1px solid #ccc",
+            borderRadius: "6px",
+            outline: "none",
+            transition: "border 0.2s ease-in-out",
+          }} type="text" placeholder="Name" className="border p-1 m-1"
+              value={customer.name} onChange={(e) => setCustomer({ ...customer, name: e.target.value })} />
+            <input  style={{
+            width: "100%",
+            padding: "10px",
+            marginBottom: "10px",
+            border: "1px solid #ccc",
+            borderRadius: "6px",
+          }} type="text" placeholder="Phone" className="border p-1 m-1"
+              value={customer.phone} onChange={(e) => setCustomer({ ...customer, phone: e.target.value })} />
+
+    <select className="border p-1 m-1"
+        value={customer.barber} onChange={(e) => setCustomer({ ...customer, barber: e.target.value })}
+        style={{ width: "100%", padding: "10px", border: "1px solid #ccc", borderRadius: "6px", cursor: "pointer" }}>
+        <option value="">Select Barber</option>
+        {barbers.map((barber) => (
+          <option key={barber.id} value={barber.name}>{barber.name}</option>
+        ))}
+      </select>
+          
+        <select className="border p-1 m-1"
+          value={customer.paymentMode} onChange={(e) => setCustomer({ ...customer, paymentMode: e.target.value })}
+          style={{
+            width: "100%",
+            padding: "10px",
+            border: "1px solid #ccc",
+            borderRadius: "6px",
+            cursor: "pointer",
           }}
         >
-          <span onClick={() => setSelectedItems([...selectedItems, item])} className="service-name">{item.name} - Rs.{item.price}</span>
-          <IoMdAddCircle
-            style={{
-              position: "absolute",
-              bottom: "10px",
-              left: "50%",  // Center horizontally
-              transform: "translateX(-50%)", // Adjust positioning to exact center
-              cursor: "pointer",
-              color: "#28a745",
-              top:"65%"
-            }}
-            onClick={() => setSelectedItems([...selectedItems, item])}
-            size={25}
-          />
-        </div>
-      ))}
-    </div>
-
-  <div className="merge">
-  
-  <div
-  className="selected-services"
-  style={{
-    backgroundColor: "#f8f9fa",
-    padding: "15px",
-    borderRadius: "10px",
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-    maxWidth: "400px",
-    margin: "20px auto",
-  }}
->
-  <h2
-    className="text-lg font-semibold"
-    style={{
-      textAlign: "center",
-      marginBottom: "15px",
-      borderBottom: "2px solid #ddd",
-      paddingBottom: "5px",
-    }}
-  >
-    Selected Services
-  </h2>
-
-  {Object.entries(
-    selectedItems.reduce((acc, item) => {
-      acc[item.name] = acc[item.name]
-        ? { ...acc[item.name], count: acc[item.name].count + 1 }
-        : { ...item, count: 1 };
-      return acc;
-    }, {})
-  ).map(([name, item], index) => (
-    <div
-      key={index}
+          <option value="">Select Payment Mode</option>
+          <option value="cash">Cash</option>
+          <option value="online">Online</option>
+        </select>
+          </div>
+    
+          {/* Discount Section */}
+      <div className="discount" style={{ flex: "1", minWidth: "280px", padding: "20px", backgroundColor: "#ffffff", borderRadius: "12px", boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)", transition: "transform 0.2s ease-in-out" }}>
+        <h2 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "10px", textAlign: "center", color: "#333" }}>Discount</h2>
+        <select value={discountType} onChange={(e) => setDiscountType(e.target.value)} style={{ width: "100%", padding: "10px", marginBottom: "10px", border: "1px solid #ccc", borderRadius: "6px", cursor: "pointer" }}>
+          <option value="percentage">Percentage</option>
+          <option value="fixed">Rs.</option>
+        </select>
+        <input type="number" placeholder="Enter Discount" value={discountValue} onChange={(e) => setDiscountValue(parseFloat(e.target.value) || 0)} style={{ width: "100%", padding: "10px", marginBottom: "10px", border: "1px solid #ccc", borderRadius: "6px" }} />
+        <p style={{ fontSize: "16px", fontWeight: "500", textAlign: "center", marginBottom: "10px" }}>Total: Rs. {calculateTotal()}</p>
+      </div>
+    
+  </div>
+    
+         {/* Complete Purchase Button */}
+    <button
+      className="complete-purchase"
+      onClick={handlePurchase}
+      disabled={selectedItems.length === 0 || !customer.name || !customer.phone || !customer.barber || !customer.paymentMode}
       style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "10px",
-        backgroundColor: "#fff",
-        borderRadius: "5px",
-        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-        marginBottom: "10px",
+        marginTop: "20px",
+        backgroundColor: selectedItems.length === 0 || !customer.name || !customer.phone || !customer.barber || !customer.paymentMode
+          ? "#ccc" : "#28a745",
+        color: "white",
+        padding: "12px 20px",
+        border: "none",
+        borderRadius: "6px",
+        cursor: selectedItems.length === 0 || !customer.name || !customer.phone || !customer.barber || !customer.paymentMode
+          ? "not-allowed" : "pointer",
+        fontSize: "16px",
+        fontWeight: "600",
+        transition: "background 0.3s ease-in-out",
       }}
     >
-      <span style={{ fontSize: "16px", fontWeight: "500" }}>
-        {name} x{item.count} - Rs.{item.price * item.count}
-      </span>
-      <IoIosRemoveCircle
-        onClick={() =>
-          setSelectedItems((prev) => {
-            const indexToRemove = prev.findIndex((i) => i.name === item.name);
-            return prev.filter((_, idx) => idx !== indexToRemove);
-          })
-        }
-        size={25}
-        style={{
-          cursor: "pointer",
-          color: "#d9534f",
-          transition: "transform 0.2s ease-in-out",
-        }}
-        onMouseOver={(e) => (e.target.style.transform = "scale(1.1)")}
-        onMouseOut={(e) => (e.target.style.transform = "scale(1)")}
-      />
-    </div>
-  ))}
-</div>
-
-
-<div
-  className="customer-details"
-  style={{
-    backgroundColor: "#f8f9fa",
-    padding: "8px", // Reduced padding
-    borderRadius: "10px",
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-    maxWidth: "400px",
-    margin: "10px auto", // Reduced margin
-    textAlign: "center",
-    maxHeight: "220px", // Further reduced height
-    overflowY: "auto", // Enables scrolling if needed
-  }}
->
-  <h2
-    className="text-lg font-semibold"
-    style={{
-      marginBottom: "8px", // Reduced spacing
-      borderBottom: "2px solid #ddd",
-      paddingBottom: "3px",
-      fontSize: "16px", // Slightly smaller font
-    }}
-  >
-    Customer Details
-  </h2>
-
-  <input
-    type="text"
-    placeholder="Name"
-    className="border p-1 m-1"
-    value={customer.name}
-    onChange={(e) => setCustomer({ ...customer, name: e.target.value })}
-    style={{
-      width: "90%",
-      padding: "6px", // Reduced padding
-      borderRadius: "5px",
-      border: "1px solid #ccc",
-      marginBottom: "4px", // Reduced margin
-      fontSize: "14px",
-    }}
-  />
-  <input
-    type="text"
-    placeholder="Phone"
-    className="border p-1 m-1"
-    value={customer.phone}
-    onChange={(e) => setCustomer({ ...customer, phone: e.target.value })}
-    style={{
-      width: "90%",
-      padding: "6px",
-      borderRadius: "5px",
-      border: "1px solid #ccc",
-      marginBottom: "4px",
-      fontSize: "14px",
-    }}
-  />
-
-  <select
-    className="border p-1 m-1"
-    value={customer.barber}
-    onChange={(e) => setCustomer({ ...customer, barber: e.target.value })}
-    style={{
-      width: "95%",
-      padding: "6px",
-      borderRadius: "5px",
-      border: "1px solid #ccc",
-      marginBottom: "4px",
-      fontSize: "14px",
-    }}
-  >
-    <option value="">Select Barber</option>
-    {barbers.map((barber) => (
-      <option key={barber.id} value={barber.name}>
-        {barber.name}
-      </option>
-    ))}
-  </select>
-
-  <select
-    className="border p-1 m-1"
-    value={customer.paymentMode}
-    onChange={(e) => setCustomer({ ...customer, paymentMode: e.target.value })}
-    style={{
-      width: "95%",
-      padding: "6px",
-      borderRadius: "5px",
-      border: "1px solid #ccc",
-      marginBottom: "4px",
-      fontSize: "14px",
-    }}
-  >
-    <option value="">{payment}</option>
-    <option value="cash">Cash</option>
-    <option value="online">Online</option>
-  </select>
-</div>
-
-
-
-{/* Discount Section */}
-<div
-  className="discount"
-  style={{
-    backgroundColor: "#fff",
-    padding: "10px", // Reduced padding
-    borderRadius: "8px", // Slightly smaller border radius
-    boxShadow: "0 3px 6px rgba(0, 0, 0, 0.1)",
-    maxWidth: "250px", // Reduced width
-    margin: "10px", // Reduced margin
-    textAlign: "center",
-  }}
->
-  <h2
-    className="text-md font-semibold"
-    style={{
-      marginBottom: "10px", // Reduced spacing
-      borderBottom: "1px solid #ddd",
-      paddingBottom: "3px",
-      fontSize: "large", // Slightly smaller font
-    }}
-  >
-    Discount
-  </h2>
-
-  <input
-    type="number"
-    placeholder={discountpercent}
-    className="border p-1 m-1"
-    onChange={(e) => setDiscount(parseFloat(e.target.value) || 0)}
-    style={{
-      width: "85%", // Slightly smaller width
-      padding: "6px", // Reduced padding
-      borderRadius: "4px",
-      border: "1px solid #ccc",
-      marginBottom: "6px", // Reduced spacing
-      fontSize: "13px",
-    }}
-  />
-
-  <p
-    style={{
-      fontSize: "16px", // Slightly smaller font
-      fontWeight: "bold",
-      color: "#333",
-      marginBottom: "10px", // Reduced margin
-    }}
-  >
-    Total: Rs. 
-    {selectedItems.reduce((acc, item) => acc + item.price, 0) * (1 - discount / 100)}
-  </p>
-
-  <button
-  className="complete-purchase"
-  onClick={handlePurchase}
-  disabled={
-    selectedItems.length === 0 ||
-    !customer.name ||
-    !customer.phone ||
-    !customer.barber ||
-    !customer.paymentMode
-  }
-  style={{
-    backgroundColor:
-      selectedItems.length === 0 ||
-      !customer.name ||
-      !customer.phone ||
-      !customer.barber ||
-      !customer.paymentMode
-        ? "#ccc"
-        : "#28a745",
-    color: "white",
-    padding: "8px 15px",
-    border: "none",
-    borderRadius: "4px",
-    cursor:
-      selectedItems.length === 0 ||
-      !customer.name ||
-      !customer.phone ||
-      !customer.barber ||
-      !customer.paymentMode
-        ? "not-allowed"
-        : "pointer",
-    fontSize: "14px",
-    transition: "background 0.3s ease-in-out",
-  }}
->
-  Complete Purchase
-</button>
-
-</div>
-
-
+      Complete Purchase
+    </button>
       </div>
-
     </div>
-  </div>
-        
-        
     
   );
 };

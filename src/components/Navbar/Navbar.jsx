@@ -19,11 +19,11 @@ export const Navbar=({titles})=>{
         <>
             <div style={{display:"inline-block"}}>
                 <div className="outer-container" onClick={() => setShowNavBarOptions(!showNavBarOptions)}>
-                    <div className="salon-logo">
+                    {/* <div className="salon-logo">
                         <img src="/logo.png" alt="" height={"70px"} />
-                    </div>
-                    <span className="salon-name"><p>Scissor & Style</p></span>
-                    <span className="salon-name2"><p>Unisex Salon</p></span>
+                    </div> */}
+                    <span className="salon-name"><p>Scissor & Style Unisex Salon</p></span>
+                    <span className="salon-name2"><p></p></span>
                     <div className={ showNavBarOptions ? "nav-bar show-hamburger-options" : "nav-bar" }>  
                         <div className="nav" >
                             {titles.map((curElement,index)=>{
@@ -40,8 +40,8 @@ export const Navbar=({titles})=>{
                     <nav
                         style={{
                             position: "absolute",
-                            top: "15px",
-                            left: "10px",
+                            top: "1px",
+                            left: "1px",
                             display: "flex",
                             alignItems: "center",
                             gap: "10px", // Adds spacing if needed for future elements

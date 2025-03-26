@@ -66,7 +66,7 @@ export const LabPage = () => {
   };
 
   return (
-    <div style={{display:"flex" ,justifyContent:"center"}}>
+    <div style={{display:"flex" ,position:"absolute",right:"170px", top:"70px"}}>
 
       <div style={{ padding: "16px", border: "1px solid #ccc", borderRadius: "8px" ,width:"500px" }}>
           <h2 style={{ fontSize: "18px", fontWeight: "600" }}>

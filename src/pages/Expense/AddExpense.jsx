@@ -74,11 +74,12 @@ export const Expense = () => {
   return (
     <div style={{
       position: "absolute",
-      right: "200px",
+      right: "100px",
       padding: "20px",
       border: "2px solid #ccc",
       borderRadius: "10px",
-      maxWidth: "800px",
+      maxWidth: "600px",
+      width:"90%",
       margin: "20px auto",
       backgroundColor: "#f9f9f9",
       boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)"

@@ -98,7 +98,7 @@ export const Publication = () => {
   };
 
   return (
-<div style={{ padding: "16px", maxWidth: "32rem", margin: "0 auto" }}>
+<div style={{ padding: "16px", maxWidth: "32rem", margin: "0 auto" , position:"absolute" ,right:"180px" , top:"70px" }}>
   <h2 style={{ fontSize: "1.125rem", fontWeight: "600" }}>Sales Report</h2>
   
   <input 
@@ -149,7 +149,7 @@ export const Publication = () => {
   <div style={{ marginTop: "16px", border: "1px solid #ccc", padding: "16px", borderRadius: "8px" }}>
     <h3 style={{ fontWeight: "600" }}>Sales per Service (Pie Chart)</h3>
     {pieData.length > 0 ? (
-      <PieChart width={400} height={300}>
+      <PieChart width={450} height={600}>
         <Pie data={pieData} cx="50%" cy="50%" outerRadius={100} fill="#8884d8" dataKey="value" label>
           {pieData.map((_, index) => (
             <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
@@ -178,37 +178,39 @@ export const Publication = () => {
 
   {/* Sales Table */}
   
-  <div style={{ marginTop: "16px", border: "1px solid #ccc", padding: "16px", borderRadius: "8px" }}>
-        <h3 style={{ fontWeight: "600" }}>Sales Table</h3>
-        <table style={{ width: "100%", borderCollapse: "collapse", border: "1px solid #ccc", marginTop: "8px" }}>
-          <thead>
-            <tr style={{ backgroundColor: "#E5E7EB" }}>
-              <th>Date</th>
-              <th>Barber</th>
-              <th>Services</th>
-              <th>Payment Mode</th>
-              <th>Total Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            {sales.length > 0 ? (
-              sales.map(sale => (
-                <tr key={sale.id}>
-                  <td>{sale.date?.toDate().toLocaleDateString()}</td>
-                  <td>{barbers.find(b => b.id === sale.barberId)?.name || "Unknown"}</td>
-                  <td>{sale.services ? formatServices(sale.services) : "N/A"}</td>
-                  <td>{sale.paymentMode}</td>
-                  <td>Rs.{sale.total?.toFixed(2)}</td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="5" style={{ textAlign: "center" }}>No sales data available.</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+  <div>
+  <h3 style={{ fontWeight: "600", marginBottom: "8px", color: "#555" }}>Sales Table</h3>
+  
+  <table style={{ width: "0%", borderCollapse: "collapse", border: "1px solid #ccc", marginTop: "8px", backgroundColor: "#fff" }}>
+    <thead>
+      <tr style={{ backgroundColor: "#E5E7EB", textAlign: "left" }}>
+        <th style={{ padding: "5px", borderBottom: "2px solid #ccc", minWidth: "80px" }}>Date</th>
+        <th style={{ padding: "5px", borderBottom: "2px solid #ccc", minWidth: "100px" }}>Barber</th>
+        <th style={{ padding: "5px", borderBottom: "2px solid #ccc", minWidth: "150px" }}>Services</th>
+        <th style={{ padding: "5px", borderBottom: "2px solid #ccc", minWidth: "100px" }}>Payment Mode</th>
+        <th style={{ padding: "5px", borderBottom: "2px solid #ccc", minWidth: "100px" }}>Total Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      {sales.length > 0 ? (
+        sales.map(sale => (
+          <tr key={sale.id} style={{ borderBottom: "1px solid #ddd" }}>
+            <td style={{ padding: "8px" }}>{sale.date?.toDate().toLocaleDateString()}</td>
+            <td style={{ padding: "8px" }}>{barbers.find(b => b.id === sale.barberId)?.name || "Unknown"}</td>
+            <td style={{ padding: "8px" }}>{sale.services ? formatServices(sale.services) : "N/A"}</td>
+            <td style={{ padding: "8px" }}>{sale.paymentMode}</td>
+            <td style={{ padding: "8px", fontWeight: "bold", color: "#007bff" }}>Rs.{sale.total?.toFixed(2)}</td>
+          </tr>
+        ))
+      ) : (
+        <tr>
+          <td colSpan="5" style={{ textAlign: "center", padding: "10px", color: "#666" }}>No sales data available.</td>
+        </tr>
+      )}
+    </tbody>
+  </table>
+</div>
+
 
 </div>
 

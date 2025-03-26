@@ -49,7 +49,7 @@ export const History = () => {
   };
 
   return (
-<div style={{ padding: "16px", maxWidth: "64rem", margin: "0 auto" , position:"absolute", right:"100px"}}>
+<div style={{ padding: "16px", maxWidth: "45rem", margin: "0 auto", position: "absolute", right: "30px" }}>
     <h2 style={{ fontSize: "1.5rem", fontWeight: "600" }}>History</h2>
 
     <div style={{ marginTop: "16px", border: "1px solid #ccc", padding: "16px", borderRadius: "8px" }}>
@@ -57,39 +57,40 @@ export const History = () => {
         <table style={{ width: "100%", borderCollapse: "collapse", border: "1px solid #ccc", marginTop: "8px" }}>
             <thead>
                 <tr style={{ backgroundColor: "#E5E7EB" }}>
-                    <th style={{ border: "1px solid #ccc", padding: "12px", minWidth: "120px" }}>Date</th>
-                    <th style={{ border: "1px solid #ccc", padding: "12px", minWidth: "140px" }}>Barber</th>
-                    <th style={{ border: "1px solid #ccc", padding: "12px", minWidth: "180px" }}>Services</th>
-                    <th style={{ border: "1px solid #ccc", padding: "12px", minWidth: "140px" }}>Payment Mode</th>
-                    <th style={{ border: "1px solid #ccc", padding: "12px", minWidth: "120px" }}>Total Amount</th>
+                    <th style={{ border: "1px solid #ccc", padding: "6px", minWidth: "80px" }}>Date</th>
+                    <th style={{ border: "1px solid #ccc", padding: "6px", minWidth: "100px" }}>Barber</th>
+                    <th style={{ border: "1px solid #ccc", padding: "6px", minWidth: "130px" }}>Services</th>
+                    <th style={{ border: "1px solid #ccc", padding: "6px", minWidth: "90px" }}>Payment</th>
+                    <th style={{ border: "1px solid #ccc", padding: "6px", minWidth: "90px" }}>Total</th>
                 </tr>
             </thead>
             <tbody>
                 {sales.length > 0 ? (
                     sales.map(sale => (
                         <tr key={sale.id} style={{ border: "1px solid #ccc" }}>
-                            <td style={{ border: "1px solid #ccc", padding: "12px" }}>{sale.date?.toDate().toLocaleDateString()}</td>
-                            <td style={{ border: "1px solid #ccc", padding: "12px" }}>
+                            <td style={{ border: "1px solid #ccc", padding: "6px" }}>{sale.date?.toDate().toLocaleDateString()}</td>
+                            <td style={{ border: "1px solid #ccc", padding: "6px" }}>
                                 {barbers.find(b => b.id === sale.barberId)?.name || "Unknown"}
                             </td>
-                            <td style={{ border: "1px solid #ccc", padding: "12px" }}>
+                            <td style={{ border: "1px solid #ccc", padding: "6px" }}>
                                 {formatServices(sale.services)}
                             </td>
-                            <td style={{ border: "1px solid #ccc", padding: "12px" }}>{sale.paymentMode}</td>
-                            <td style={{ border: "1px solid #ccc", padding: "12px", fontWeight: "bold", color: "#007bff" }}>
+                            <td style={{ border: "1px solid #ccc", padding: "6px" }}>{sale.paymentMode}</td>
+                            <td style={{ border: "1px solid #ccc", padding: "6px", fontWeight: "bold", color: "#007bff" }}>
                                 Rs.{sale.total?.toFixed(2)}
                             </td>
                         </tr>
                     ))
                 ) : (
                     <tr>
-                        <td colSpan="5" style={{ textAlign: "center", padding: "12px" }}>No recent sales data available.</td>
+                        <td colSpan="5" style={{ textAlign: "center", padding: "6px" }}>No recent sales data available.</td>
                     </tr>
                 )}
             </tbody>
         </table>
     </div>
 </div>
+
 
   );
 };
