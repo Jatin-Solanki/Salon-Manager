@@ -31,7 +31,7 @@ import { useAuth } from "/src/context/AuthContext";
 import { AppLayout } from "../Layout/applayout"; // Ensure correct import
 
 const userPermissions = {
-  "scissors.style.unisex@gmail.com": ["/applayout/home", "/applayout/about", "/applayout/lab", "/applayout/history","/applayout/expense"],
+  "scissors.style.unisex@gmail.com": ["/applayout/home", "/applayout/about", "/applayout/lab", "/applayout/history"],
   "solankisumit36@gmail.com": ["all"], // Consistent structure
   "jsolanki7788@gmail.com":["all"],
   "thorpower39@gmail.com":["all"],
